@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui";
+import { Logo } from "@/components/Logo";
 
 export default function LandingNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -24,9 +24,8 @@ export default function LandingNav() {
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-2 font-[family-name:var(--font-display)] text-xl font-extrabold">
-          <Image src="/logo-mark.png" alt="" width={28} height={28} className="h-7 w-7" priority />
-          FORGE
+        <Link href="/">
+          <Logo className="text-2xl" />
         </Link>
         <div className="hidden items-center gap-7 text-sm text-[var(--text-dim)] sm:flex">
           <a href="#features" className="hover:text-[var(--text)]">

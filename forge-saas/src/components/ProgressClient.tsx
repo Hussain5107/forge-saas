@@ -66,7 +66,7 @@ export default function ProgressClient({ sets, personalRecords, streak }: Props)
   }, [personalRecords]);
 
   return (
-    <main className="mx-auto max-w-5xl px-4 pb-24 pt-6 sm:px-6">
+    <main className="mx-auto w-full max-w-5xl px-4 pb-24 pt-6 sm:px-6">
       <header className="mb-6 flex items-center justify-between">
         <Link href="/dashboard">
           <Logo />
