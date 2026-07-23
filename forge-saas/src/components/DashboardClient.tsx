@@ -137,7 +137,7 @@ export default function DashboardClient({
     <main className="mx-auto max-w-5xl px-4 pb-24 pt-6 sm:px-6">
       <header className="mb-6 flex items-center justify-between">
         <div className="font-[family-name:var(--font-display)] text-lg font-extrabold">FORGE</div>
-        <div className="flex items-center gap-4 text-xs text-[var(--text-faint)]">
+        <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--text-faint)] sm:gap-4">
           {liveStreak.current > 0 && (
             <span className="flex items-center gap-1 font-bold text-[var(--amber)]">
               🔥 {liveStreak.current} day{liveStreak.current === 1 ? "" : "s"}

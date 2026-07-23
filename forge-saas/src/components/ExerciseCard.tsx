@@ -368,7 +368,7 @@ function SetLogger({
           }
 
           return (
-            <div key={setNumber} className="flex items-center gap-2">
+            <div key={setNumber} className="flex flex-wrap items-center gap-2">
               <span className="w-12 shrink-0 font-mono text-xs text-[var(--text-faint)]">Set {setNumber}</span>
               <input
                 type="number"
