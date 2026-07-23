@@ -1,24 +1,29 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button, Card } from "@/components/ui";
 
 const FEATURES = [
   {
     icon: "🎯",
+    image: "/images/incline-barbell-press.jpg",
     title: "Personalized to you",
     body: "Age, sex, height, weight, goal, and experience level tune your sets, reps, rest, and nutrition targets.",
   },
   {
     icon: "📷",
+    image: "/images/seated-cable-row.jpg",
     title: "Real exercise photos",
     body: "Every exercise has a real reference photo and a proper-form video, not a generic icon.",
   },
   {
     icon: "🍽️",
+    image: "/images/dumbbell-lateral-raise.jpg",
     title: "Nutrition dialed in",
     body: "Daily calorie, protein, and water targets computed from your numbers and your goal.",
   },
   {
     icon: "📈",
+    image: "/images/leg-press.jpg",
     title: "Track every session",
     body: "Mark exercises done, jot notes, and build a streak — synced to your account.",
   },
@@ -42,37 +47,56 @@ export default function LandingPage() {
         </nav>
       </header>
 
-      <section className="mb-16 text-center">
-        <div className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[var(--cyan)]">
-          <span className="h-1.5 w-1.5 rounded-full bg-[var(--volt)]" />
-          Free during beta
+      <section className="mb-16 grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
+        <div className="text-center lg:text-left">
+          <div className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[var(--cyan)]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[var(--volt)]" />
+            Free during beta
+          </div>
+          <h1 className="mx-auto max-w-2xl text-4xl font-extrabold leading-tight sm:text-5xl lg:mx-0">
+            Your personalized{" "}
+            <span className="bg-gradient-to-br from-[var(--violet)] to-[var(--cyan)] bg-clip-text text-transparent">
+              6-day program
+            </span>
+            , built in a minute.
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-[var(--text-dim)] lg:mx-0">
+            Answer a few questions about yourself and your goal. Get a real Push/Pull/Legs program
+            with photos, videos, and nutrition targets — not a generic PDF.
+          </p>
+          <div className="mt-8 flex justify-center gap-3 lg:justify-start">
+            <Link href="/signup">
+              <Button variant="primary" className="px-7 py-3 text-base">
+                Build my program
+              </Button>
+            </Link>
+          </div>
         </div>
-        <h1 className="mx-auto max-w-2xl text-4xl font-extrabold leading-tight sm:text-5xl">
-          Your personalized{" "}
-          <span className="bg-gradient-to-br from-[var(--violet)] to-[var(--cyan)] bg-clip-text text-transparent">
-            6-day program
-          </span>
-          , built in a minute.
-        </h1>
-        <p className="mx-auto mt-4 max-w-xl text-[var(--text-dim)]">
-          Answer a few questions about yourself and your goal. Get a real Push/Pull/Legs program
-          with photos, videos, and nutrition targets — not a generic PDF.
-        </p>
-        <div className="mt-8 flex justify-center gap-3">
-          <Link href="/signup">
-            <Button variant="primary" className="px-7 py-3 text-base">
-              Build my program
-            </Button>
-          </Link>
+
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[24px] border border-[var(--border)] shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
+          <Image
+            src="/images/incline-barbell-press.jpg"
+            alt="Training on FORGE's Push day"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)]/70 via-transparent to-transparent" />
         </div>
       </section>
 
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {FEATURES.map((f) => (
-          <Card key={f.title} className="p-5">
-            <div className="mb-2 text-2xl">{f.icon}</div>
-            <h3 className="mb-1 font-bold">{f.title}</h3>
-            <p className="text-sm text-[var(--text-dim)]">{f.body}</p>
+          <Card key={f.title} className="overflow-hidden p-0">
+            <div className="relative h-32 w-full">
+              <Image src={f.image} alt="" fill className="object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--surface)] via-[var(--surface)]/10 to-transparent" />
+              <span className="absolute bottom-2 left-3 text-2xl">{f.icon}</span>
+            </div>
+            <div className="p-5 pt-3">
+              <h3 className="mb-1 font-bold">{f.title}</h3>
+              <p className="text-sm text-[var(--text-dim)]">{f.body}</p>
+            </div>
           </Card>
         ))}
       </section>
