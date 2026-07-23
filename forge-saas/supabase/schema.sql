@@ -100,3 +100,91 @@ create policy "progress: update own" on public.progress
   for update using (auth.uid() = user_id);
 
 create index if not exists progress_user_date_idx on public.progress (user_id, log_date);
+
+-- 4. WORKOUT_SETS -------------------------------------------------------------
+-- One row per logged set (actual weight/reps used), for progress charts and
+-- PR detection. Separate from `progress` (which just tracks done/notes).
+
+create table if not exists public.workout_sets (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.profiles (id) on delete cascade,
+  log_date date not null,
+  day_number int not null,
+  exercise_slug text not null,
+  exercise_name text not null,
+  set_number int not null,
+  weight_kg numeric check (weight_kg >= 0),
+  reps int check (reps >= 0),
+  rpe numeric check (rpe between 1 and 10),
+  logged_at timestamptz not null default now()
+);
+
+alter table public.workout_sets enable row level security;
+
+drop policy if exists "workout_sets: select own" on public.workout_sets;
+create policy "workout_sets: select own" on public.workout_sets
+  for select using (auth.uid() = user_id);
+
+drop policy if exists "workout_sets: insert own" on public.workout_sets;
+create policy "workout_sets: insert own" on public.workout_sets
+  for insert with check (auth.uid() = user_id);
+
+drop policy if exists "workout_sets: delete own" on public.workout_sets;
+create policy "workout_sets: delete own" on public.workout_sets
+  for delete using (auth.uid() = user_id);
+
+create index if not exists workout_sets_user_exercise_idx on public.workout_sets (user_id, exercise_slug, logged_at desc);
+create index if not exists workout_sets_user_date_idx on public.workout_sets (user_id, log_date);
+
+-- 5. PERSONAL_RECORDS ---------------------------------------------------------
+-- Append-only: a new row every time a PR is beaten, so history is preserved.
+-- The current PR per exercise is just the latest row for that exercise.
+
+create table if not exists public.personal_records (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.profiles (id) on delete cascade,
+  exercise_slug text not null,
+  exercise_name text not null,
+  weight_kg numeric not null,
+  reps int not null,
+  estimated_1rm numeric not null,
+  achieved_at timestamptz not null default now()
+);
+
+alter table public.personal_records enable row level security;
+
+drop policy if exists "personal_records: select own" on public.personal_records;
+create policy "personal_records: select own" on public.personal_records
+  for select using (auth.uid() = user_id);
+
+drop policy if exists "personal_records: insert own" on public.personal_records;
+create policy "personal_records: insert own" on public.personal_records
+  for insert with check (auth.uid() = user_id);
+
+create index if not exists personal_records_user_exercise_idx on public.personal_records (user_id, exercise_slug, achieved_at desc);
+
+-- 6. STREAKS -------------------------------------------------------------
+-- One row per user, updated whenever they log at least one set for the day.
+
+create table if not exists public.streaks (
+  user_id uuid primary key references public.profiles (id) on delete cascade,
+  current_streak int not null default 0,
+  longest_streak int not null default 0,
+  last_workout_date date,
+  total_workouts int not null default 0,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.streaks enable row level security;
+
+drop policy if exists "streaks: select own" on public.streaks;
+create policy "streaks: select own" on public.streaks
+  for select using (auth.uid() = user_id);
+
+drop policy if exists "streaks: upsert own" on public.streaks;
+create policy "streaks: upsert own" on public.streaks
+  for insert with check (auth.uid() = user_id);
+
+drop policy if exists "streaks: update own" on public.streaks;
+create policy "streaks: update own" on public.streaks
+  for update using (auth.uid() = user_id);

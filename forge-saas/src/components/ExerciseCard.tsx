@@ -4,20 +4,35 @@ import { useState } from "react";
 import Image from "next/image";
 import type { PrescribedExercise } from "@/lib/exercises/types";
 import { MUSCLE_LABELS } from "@/lib/exercises/types";
+import type { LoggedSet } from "@/lib/exercises/loggingTypes";
 
 interface Props {
   index: number;
   exercise: PrescribedExercise;
   done: boolean;
   note: string;
+  loggedSets: LoggedSet[];
+  previousBest: LoggedSet | null;
   onToggleDone: () => void;
   onSaveNote: (note: string) => void;
+  onLogSet: (setNumber: number, weightKg: number, reps: number) => Promise<{ isNewPR: boolean }>;
 }
 
-export default function ExerciseCard({ index, exercise: ex, done, note, onToggleDone, onSaveNote }: Props) {
+export default function ExerciseCard({
+  index,
+  exercise: ex,
+  done,
+  note,
+  loggedSets,
+  previousBest,
+  onToggleDone,
+  onSaveNote,
+  onLogSet,
+}: Props) {
   const [open, setOpen] = useState(false);
   const [noteDraft, setNoteDraft] = useState(note);
   const [imgError, setImgError] = useState(false);
+  const [prFlash, setPrFlash] = useState(false);
 
   const videoUrl =
     ex.videoUrl ?? `https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + " proper form tutorial")}`;
@@ -116,6 +131,20 @@ export default function ExerciseCard({ index, exercise: ex, done, note, onToggle
             <Stat label="Tempo" value={ex.tempo} />
           </div>
 
+          <SetLogger
+            targetSets={ex.sets}
+            loggedSets={loggedSets}
+            previousBest={previousBest}
+            prFlash={prFlash}
+            onLogSet={async (setNumber, weightKg, reps) => {
+              const result = await onLogSet(setNumber, weightKg, reps);
+              if (result.isNewPR) {
+                setPrFlash(true);
+                setTimeout(() => setPrFlash(false), 4000);
+              }
+            }}
+          />
+
           <div className="mt-4 flex flex-col items-center gap-4 rounded-2xl border border-[var(--border)] bg-[var(--bg-2)] p-4 sm:flex-row">
             <span className="h-[150px] w-full shrink-0 overflow-hidden rounded-xl bg-[var(--surface)] sm:h-[120px] sm:w-[120px]">
               {!imgError ? (
@@ -194,6 +223,103 @@ export default function ExerciseCard({ index, exercise: ex, done, note, onToggle
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function SetLogger({
+  targetSets,
+  loggedSets,
+  previousBest,
+  prFlash,
+  onLogSet,
+}: {
+  targetSets: number;
+  loggedSets: LoggedSet[];
+  previousBest: LoggedSet | null;
+  prFlash: boolean;
+  onLogSet: (setNumber: number, weightKg: number, reps: number) => Promise<void>;
+}) {
+  const [drafts, setDrafts] = useState<Record<number, { weight: string; reps: string }>>({});
+  const [pending, setPending] = useState<number | null>(null);
+  const loggedByNumber = new Map(loggedSets.map((s) => [s.setNumber, s]));
+
+  return (
+    <div className="mt-4 rounded-2xl border border-[var(--border)] bg-[var(--bg-2)] p-4">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <h4 className="text-[11px] font-bold uppercase tracking-wide text-[var(--text-faint)]">
+          🏋️ Log your sets
+        </h4>
+        {previousBest && (
+          <span className="text-xs text-[var(--text-dim)]">
+            Last time: <b className="text-[var(--text)]">{previousBest.weightKg}kg × {previousBest.reps}</b>
+          </span>
+        )}
+      </div>
+
+      {prFlash && (
+        <div className="mb-3 rounded-lg border border-[rgba(255,176,32,0.4)] bg-[rgba(255,176,32,0.12)] px-3 py-2 text-sm font-bold text-[var(--amber)]">
+          🏆 New personal record!
+        </div>
+      )}
+
+      <div className="flex flex-col gap-2">
+        {Array.from({ length: targetSets }, (_, i) => i + 1).map((setNumber) => {
+          const logged = loggedByNumber.get(setNumber);
+          const draft = drafts[setNumber] ?? { weight: "", reps: "" };
+
+          if (logged) {
+            return (
+              <div
+                key={setNumber}
+                className="flex items-center gap-3 rounded-lg border border-[rgba(198,255,61,0.3)] bg-[rgba(198,255,61,0.06)] px-3 py-2 text-sm"
+              >
+                <span className="w-12 shrink-0 font-mono text-xs text-[var(--text-faint)]">Set {setNumber}</span>
+                <span className="font-bold text-[var(--volt)]">✓</span>
+                <span>
+                  {logged.weightKg}kg × {logged.reps} reps
+                </span>
+              </div>
+            );
+          }
+
+          return (
+            <div key={setNumber} className="flex items-center gap-2">
+              <span className="w-12 shrink-0 font-mono text-xs text-[var(--text-faint)]">Set {setNumber}</span>
+              <input
+                type="number"
+                inputMode="decimal"
+                placeholder="kg"
+                value={draft.weight}
+                onChange={(e) => setDrafts((d) => ({ ...d, [setNumber]: { ...draft, weight: e.target.value } }))}
+                className="w-20 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 text-sm outline-none focus:border-[var(--cyan)]"
+              />
+              <span className="text-xs text-[var(--text-faint)]">kg ×</span>
+              <input
+                type="number"
+                inputMode="numeric"
+                placeholder="reps"
+                value={draft.reps}
+                onChange={(e) => setDrafts((d) => ({ ...d, [setNumber]: { ...draft, reps: e.target.value } }))}
+                className="w-16 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 text-sm outline-none focus:border-[var(--cyan)]"
+              />
+              <span className="text-xs text-[var(--text-faint)]">reps</span>
+              <button
+                type="button"
+                disabled={!draft.weight || !draft.reps || pending === setNumber}
+                onClick={async () => {
+                  setPending(setNumber);
+                  await onLogSet(setNumber, parseFloat(draft.weight), parseInt(draft.reps, 10));
+                  setPending(null);
+                }}
+                className="ml-auto rounded-full bg-gradient-to-br from-[var(--violet)] to-[var(--cyan)] px-3 py-1.5 text-xs font-bold text-white disabled:opacity-40"
+              >
+                {pending === setNumber ? "…" : "Log"}
+              </button>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

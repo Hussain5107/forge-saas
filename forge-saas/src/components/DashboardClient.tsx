@@ -1,12 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import type { GeneratedProgram } from "@/lib/exercises/types";
 import { MUSCLE_LABELS } from "@/lib/exercises/types";
+import type { LoggedSet } from "@/lib/exercises/loggingTypes";
 import ExerciseCard from "./ExerciseCard";
 import NutritionPanel from "./NutritionPanel";
 import { Button } from "./ui";
-import { toggleExerciseDone, saveExerciseNote } from "@/app/dashboard/actions";
+import { toggleExerciseDone, saveExerciseNote, logSet } from "@/app/dashboard/actions";
 
 interface ProgressRow {
   log_date: string;
@@ -16,16 +18,35 @@ interface ProgressRow {
   note: string | null;
 }
 
+interface WorkoutSetRow {
+  log_date: string;
+  exercise_slug: string;
+  set_number: number;
+  weight_kg: number;
+  reps: number;
+}
+
 interface Props {
   email: string;
   program: GeneratedProgram;
   progressRows: ProgressRow[];
+  weekSetRows: WorkoutSetRow[];
+  previousBestByExercise: Record<string, LoggedSet>;
+  streak: { current: number; longest: number; total: number };
   weekDates: string[]; // 7 ISO dates, index 0 = Sunday
 }
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export default function DashboardClient({ email, program, progressRows, weekDates }: Props) {
+export default function DashboardClient({
+  email,
+  program,
+  progressRows,
+  weekSetRows,
+  previousBestByExercise,
+  streak,
+  weekDates,
+}: Props) {
   const today = new Date();
   const [selectedIndex, setSelectedIndex] = useState(today.getDay());
   const [muscleFilter, setMuscleFilter] = useState<string>("all");
@@ -39,6 +60,18 @@ export default function DashboardClient({ email, program, progressRows, weekDate
     }
     return map;
   });
+
+  // Logged sets this week, keyed by `${date}__${slug}` -> LoggedSet[].
+  const [loggedSets, setLoggedSets] = useState<Record<string, LoggedSet[]>>(() => {
+    const map: Record<string, LoggedSet[]> = {};
+    for (const row of weekSetRows) {
+      const key = `${row.log_date}__${row.exercise_slug}`;
+      (map[key] ??= []).push({ setNumber: row.set_number, weightKg: row.weight_kg, reps: row.reps });
+    }
+    return map;
+  });
+  const [previousBest, setPreviousBest] = useState(previousBestByExercise);
+  const [liveStreak, setLiveStreak] = useState(streak);
 
   const selectedDate = weekDates[selectedIndex];
   const day = program.days.find((d) => d.dayNumber === selectedIndex);
@@ -73,11 +106,36 @@ export default function DashboardClient({ email, program, progressRows, weekDate
     void saveExerciseNote(selectedDate, selectedIndex, slug, note);
   }
 
+  async function handleLogSet(exerciseName: string, slug: string, setNumber: number, weightKg: number, reps: number) {
+    const key = `${selectedDate}__${slug}`;
+    setLoggedSets((prev) => {
+      const existing = prev[key] ?? [];
+      return { ...prev, [key]: [...existing, { setNumber, weightKg, reps }] };
+    });
+    setPreviousBest((prev) => ({ ...prev, [slug]: { setNumber, weightKg, reps } }));
+
+    const result = await logSet(selectedDate, selectedIndex, slug, exerciseName, setNumber, weightKg, reps, null);
+    setLiveStreak((prev) => ({
+      current: result.streak.current,
+      longest: Math.max(result.streak.longest, prev.longest),
+      total: prev.total + (result.streak.current !== prev.current ? 1 : 0),
+    }));
+    return { isNewPR: result.isNewPR };
+  }
+
   return (
     <main className="mx-auto max-w-5xl px-4 pb-24 pt-6 sm:px-6">
       <header className="mb-6 flex items-center justify-between">
         <div className="font-[family-name:var(--font-display)] text-lg font-extrabold">FORGE</div>
-        <div className="flex items-center gap-3 text-xs text-[var(--text-faint)]">
+        <div className="flex items-center gap-4 text-xs text-[var(--text-faint)]">
+          {liveStreak.current > 0 && (
+            <span className="flex items-center gap-1 font-bold text-[var(--amber)]">
+              🔥 {liveStreak.current} day{liveStreak.current === 1 ? "" : "s"}
+            </span>
+          )}
+          <Link href="/dashboard/progress" className="hover:text-[var(--text)]">
+            Progress
+          </Link>
           <span className="hidden sm:inline">{email}</span>
           <form action="/auth/signout" method="post">
             <Button type="submit" className="px-3 py-1.5 text-xs">
@@ -181,8 +239,11 @@ export default function DashboardClient({ email, program, progressRows, weekDate
                   exercise={ex}
                   done={progress[key]?.done ?? false}
                   note={progress[key]?.note ?? ""}
+                  loggedSets={loggedSets[key] ?? []}
+                  previousBest={previousBest[ex.slug] ?? null}
                   onToggleDone={() => handleToggleDone(ex.slug)}
                   onSaveNote={(note) => handleSaveNote(ex.slug, note)}
+                  onLogSet={(setNumber, weightKg, reps) => handleLogSet(ex.name, ex.slug, setNumber, weightKg, reps)}
                 />
               );
             })}

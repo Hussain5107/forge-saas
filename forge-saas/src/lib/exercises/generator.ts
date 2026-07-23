@@ -36,6 +36,10 @@ function prescribeSets(base: number, index: number, profile: UserProfile): numbe
   if (profile.experience === "intermediate" && isMain) sets += 1;
   if (profile.experience === "advanced") sets += isMain ? 2 : 1;
 
+  // General fitness doesn't need max hypertrophy volume — trim accessory
+  // sets for time efficiency, keep the main compound lift intact.
+  if (profile.goal === "general_fitness" && !isMain) sets = Math.max(sets - 1, 2);
+
   return Math.min(sets, 6);
 }
 
@@ -66,6 +70,9 @@ function prescribeRest(baseRest: string, index: number, profile: UserProfile): s
   }
   if (profile.goal === "fat_loss") {
     return `${Math.max(seconds - 30, 45)}s`;
+  }
+  if (profile.goal === "general_fitness") {
+    return `${Math.max(seconds - 15, 45)}s`;
   }
   return baseRest;
 }
