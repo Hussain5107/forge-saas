@@ -5,25 +5,25 @@ import { Button, Card } from "@/components/ui";
 const FEATURES = [
   {
     icon: "🎯",
-    image: "/hero/personalized-leg-press.jpg",
+    image: "/hero/coached-overhead-press.jpg",
     title: "Personalized to you",
     body: "Age, sex, height, weight, goal, and experience level tune your sets, reps, rest, and nutrition targets.",
   },
   {
     icon: "📷",
-    image: "/hero/incline-press-spot.jpg",
+    image: "/hero/deadlift-closeup.jpg",
     title: "Real exercise photos",
     body: "Every exercise has a real reference photo and a proper-form video, not a generic icon.",
   },
   {
     icon: "🍽️",
-    image: "/hero/core-crunches.jpg",
+    image: "/hero/goblet-squat.jpg",
     title: "Nutrition dialed in",
     body: "Daily calorie, protein, and water targets computed from your numbers and your goal.",
   },
   {
     icon: "📈",
-    image: "/hero/group-kettlebell.jpg",
+    image: "/hero/trx-pair.jpg",
     title: "Track every session",
     body: "Mark exercises done, jot notes, and build a streak — synced to your account.",
   },
@@ -75,7 +75,7 @@ export default function LandingPage() {
 
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[24px] border border-[var(--border)] shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
           <Image
-            src="/hero/training-partners.jpg"
+            src="/hero/training-partners-2.jpg"
             alt="Training with intensity"
             fill
             className="object-cover"
