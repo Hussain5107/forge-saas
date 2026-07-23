@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { GeneratedProgram } from "@/lib/exercises/types";
 import { MUSCLE_LABELS } from "@/lib/exercises/types";
@@ -73,6 +73,16 @@ export default function DashboardClient({
   const [previousBest, setPreviousBest] = useState(previousBestByExercise);
   const [liveStreak, setLiveStreak] = useState(streak);
 
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
+  useEffect(() => {
+    setVoiceEnabled(localStorage.getItem("forge:voiceCoach") === "on");
+  }, []);
+  function toggleVoiceCoach() {
+    const next = !voiceEnabled;
+    setVoiceEnabled(next);
+    localStorage.setItem("forge:voiceCoach", next ? "on" : "off");
+  }
+
   const selectedDate = weekDates[selectedIndex];
   const day = program.days.find((d) => d.dayNumber === selectedIndex);
 
@@ -133,6 +143,18 @@ export default function DashboardClient({
               🔥 {liveStreak.current} day{liveStreak.current === 1 ? "" : "s"}
             </span>
           )}
+          <button
+            type="button"
+            onClick={toggleVoiceCoach}
+            className={`rounded-full border px-2.5 py-1 font-bold transition ${
+              voiceEnabled
+                ? "border-[var(--cyan)] text-[var(--cyan)]"
+                : "border-[var(--border)] text-[var(--text-faint)] hover:text-[var(--text)]"
+            }`}
+            title={voiceEnabled ? "Voice coach on" : "Voice coach off"}
+          >
+            🎙️ Coach {voiceEnabled ? "on" : "off"}
+          </button>
           <Link href="/dashboard/progress" className="hover:text-[var(--text)]">
             Progress
           </Link>
@@ -241,6 +263,7 @@ export default function DashboardClient({
                   note={progress[key]?.note ?? ""}
                   loggedSets={loggedSets[key] ?? []}
                   previousBest={previousBest[ex.slug] ?? null}
+                  voiceEnabled={voiceEnabled}
                   onToggleDone={() => handleToggleDone(ex.slug)}
                   onSaveNote={(note) => handleSaveNote(ex.slug, note)}
                   onLogSet={(setNumber, weightKg, reps) => handleLogSet(ex.name, ex.slug, setNumber, weightKg, reps)}

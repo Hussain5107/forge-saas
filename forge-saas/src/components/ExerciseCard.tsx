@@ -1,10 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { PrescribedExercise } from "@/lib/exercises/types";
 import { MUSCLE_LABELS } from "@/lib/exercises/types";
 import type { LoggedSet } from "@/lib/exercises/loggingTypes";
+import { useSpeech } from "@/hooks/useSpeech";
+import {
+  exerciseIntroText,
+  setLoggedText,
+  restStartText,
+  restWarningText,
+  restEndText,
+  allSetsDoneText,
+  secondsFromRestString,
+  parseVoiceCommand,
+} from "@/lib/voiceCoach";
 
 interface Props {
   index: number;
@@ -13,6 +24,7 @@ interface Props {
   note: string;
   loggedSets: LoggedSet[];
   previousBest: LoggedSet | null;
+  voiceEnabled: boolean;
   onToggleDone: () => void;
   onSaveNote: (note: string) => void;
   onLogSet: (setNumber: number, weightKg: number, reps: number) => Promise<{ isNewPR: boolean }>;
@@ -25,6 +37,7 @@ export default function ExerciseCard({
   note,
   loggedSets,
   previousBest,
+  voiceEnabled,
   onToggleDone,
   onSaveNote,
   onLogSet,
@@ -33,6 +46,41 @@ export default function ExerciseCard({
   const [noteDraft, setNoteDraft] = useState(note);
   const [imgError, setImgError] = useState(false);
   const [prFlash, setPrFlash] = useState(false);
+  const [restRemaining, setRestRemaining] = useState<number | null>(null);
+  const { speak, supportsListening, listenOnce } = useSpeech();
+  const announcedRef = useRef(false);
+
+  useEffect(() => {
+    if (open && voiceEnabled && !announcedRef.current) {
+      announcedRef.current = true;
+      speak(exerciseIntroText(ex.name, ex.sets, ex.reps, ex.rest, ex.cues[0]));
+    }
+    if (!open) announcedRef.current = false;
+  }, [open, voiceEnabled, ex, speak]);
+
+  useEffect(() => {
+    if (restRemaining === null) return;
+    if (restRemaining <= 0) {
+      speak(restEndText(), { interrupt: false });
+      setRestRemaining(null);
+      return;
+    }
+    if (restRemaining === 10) speak(restWarningText(10), { interrupt: false });
+    const timer = setTimeout(() => setRestRemaining((r) => (r !== null ? r - 1 : r)), 1000);
+    return () => clearTimeout(timer);
+  }, [restRemaining, speak]);
+
+  function handleSetLogged(setNumber: number, isNewPR: boolean, weightKg: number, reps: number) {
+    if (!voiceEnabled) return;
+    speak(setLoggedText(setNumber, ex.sets, weightKg, reps, isNewPR), { interrupt: false });
+    if (setNumber < ex.sets) {
+      const restSeconds = secondsFromRestString(ex.rest);
+      speak(restStartText(restSeconds), { interrupt: false });
+      setRestRemaining(restSeconds);
+    } else {
+      speak(allSetsDoneText(ex.name), { interrupt: false });
+    }
+  }
 
   const videoUrl =
     ex.videoUrl ?? `https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + " proper form tutorial")}`;
@@ -131,17 +179,28 @@ export default function ExerciseCard({
             <Stat label="Tempo" value={ex.tempo} />
           </div>
 
+          {restRemaining !== null && (
+            <div className="mt-4 flex items-center justify-between rounded-xl border border-[var(--cyan)]/40 bg-[var(--cyan)]/10 px-4 py-2.5 text-sm font-bold text-[var(--cyan)]">
+              <span>😮‍💨 Rest</span>
+              <span className="font-mono text-lg">{restRemaining}s</span>
+            </div>
+          )}
+
           <SetLogger
             targetSets={ex.sets}
             loggedSets={loggedSets}
             previousBest={previousBest}
             prFlash={prFlash}
+            voiceEnabled={voiceEnabled}
+            supportsListening={supportsListening}
+            listenOnce={listenOnce}
             onLogSet={async (setNumber, weightKg, reps) => {
               const result = await onLogSet(setNumber, weightKg, reps);
               if (result.isNewPR) {
                 setPrFlash(true);
                 setTimeout(() => setPrFlash(false), 4000);
               }
+              handleSetLogged(setNumber, result.isNewPR, weightKg, reps);
             }}
           />
 
@@ -232,17 +291,42 @@ function SetLogger({
   loggedSets,
   previousBest,
   prFlash,
+  voiceEnabled,
+  supportsListening,
+  listenOnce,
   onLogSet,
 }: {
   targetSets: number;
   loggedSets: LoggedSet[];
   previousBest: LoggedSet | null;
   prFlash: boolean;
+  voiceEnabled: boolean;
+  supportsListening: boolean;
+  listenOnce: () => Promise<string>;
   onLogSet: (setNumber: number, weightKg: number, reps: number) => Promise<void>;
 }) {
   const [drafts, setDrafts] = useState<Record<number, { weight: string; reps: string }>>({});
   const [pending, setPending] = useState<number | null>(null);
+  const [listening, setListening] = useState<number | null>(null);
   const loggedByNumber = new Map(loggedSets.map((s) => [s.setNumber, s]));
+
+  async function handleVoiceLog(setNumber: number) {
+    setListening(setNumber);
+    try {
+      const transcript = await listenOnce();
+      const command = parseVoiceCommand(transcript);
+      if (command.type === "log_set") {
+        setPending(setNumber);
+        await onLogSet(setNumber, command.weightKg, command.reps);
+        setPending(null);
+      }
+    } catch {
+      // Mic denied, no speech detected, or unsupported — silently ignore;
+      // the user can still type it in.
+    } finally {
+      setListening(null);
+    }
+  }
 
   return (
     <div className="mt-4 rounded-2xl border border-[var(--border)] bg-[var(--bg-2)] p-4">
@@ -304,6 +388,21 @@ function SetLogger({
                 className="w-16 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 text-sm outline-none focus:border-[var(--cyan)]"
               />
               <span className="text-xs text-[var(--text-faint)]">reps</span>
+              {voiceEnabled && supportsListening && (
+                <button
+                  type="button"
+                  disabled={pending === setNumber || listening !== null}
+                  onClick={() => handleVoiceLog(setNumber)}
+                  title="Say your weight and reps"
+                  className={`rounded-full border px-2 py-1.5 text-xs font-bold transition disabled:opacity-40 ${
+                    listening === setNumber
+                      ? "animate-pulse border-[var(--rose)] text-[var(--rose)]"
+                      : "border-[var(--border-hi)] text-[var(--text-dim)] hover:border-[var(--cyan)] hover:text-[var(--cyan)]"
+                  }`}
+                >
+                  {listening === setNumber ? "🎙️ Listening…" : "🎙️"}
+                </button>
+              )}
               <button
                 type="button"
                 disabled={!draft.weight || !draft.reps || pending === setNumber}
@@ -320,6 +419,12 @@ function SetLogger({
           );
         })}
       </div>
+
+      {voiceEnabled && supportsListening && (
+        <p className="mt-3 text-center text-[11px] text-[var(--text-faint)]">
+          🎙️ Tap the mic and say something like &ldquo;60 kilos 10 reps&rdquo;
+        </p>
+      )}
     </div>
   );
 }
