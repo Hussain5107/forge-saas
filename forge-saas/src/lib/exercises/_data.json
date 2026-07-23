@@ -1,0 +1,1494 @@
+[
+  {
+    "key": "pushA",
+    "dayNumber": 1,
+    "name": "Push A",
+    "subtitle": "Chest, Shoulders, Triceps",
+    "warmup": [
+      "Light cardio \u2014 3 min",
+      "Arm circles \u2014 2\u00d715 each way",
+      "Band pull-aparts \u2014 2\u00d715",
+      "Push-up to downward dog \u2014 1\u00d78",
+      "Shoulder dislocates \u2014 1\u00d710"
+    ],
+    "cooldown": [
+      "Chest doorway stretch \u2014 30s/side",
+      "Overhead triceps stretch \u2014 30s/side",
+      "Shoulder cross-body stretch \u2014 30s/side",
+      "Child's pose \u2014 45s"
+    ],
+    "exercises": [
+      {
+        "slug": "barbell-bench-press",
+        "name": "Barbell Bench Press",
+        "equip": "Barbell + Bench",
+        "primary": [
+          "chest"
+        ],
+        "secondary": [
+          "triceps",
+          "frontDelts"
+        ],
+        "baseSets": 3,
+        "baseReps": "8\u201310",
+        "baseRest": "120s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Shoulder blades pulled back and down, feet flat",
+          "Bar path touches mid-chest",
+          "Control the descent, drive on the press"
+        ],
+        "mistakes": [
+          "Bouncing the bar off the chest",
+          "Flaring elbows to 90\u00b0",
+          "Lifting hips off the bench"
+        ],
+        "alt": "Smith Machine Bench Press",
+        "tip": "If you don't have a spotter, keep a slightly lighter weight you can control alone.",
+        "image": "/images/barbell-bench-press.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "incline-dumbbell-press",
+        "name": "Incline Dumbbell Press",
+        "equip": "Dumbbells + Incline Bench",
+        "primary": [
+          "chest"
+        ],
+        "secondary": [
+          "frontDelts",
+          "triceps"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "90s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "30\u201345\u00b0 bench angle",
+          "Don't flare elbows past ~75\u00b0",
+          "Squeeze chest at the top"
+        ],
+        "mistakes": [
+          "Bench angle too steep (becomes a shoulder press)",
+          "Partial range of motion",
+          "Clanking dumbbells together at lockout"
+        ],
+        "alt": "Incline Barbell Press",
+        "tip": "Start light \u2014 inclines expose imbalances fast.",
+        "image": "/images/incline-dumbbell-press.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "seated-dumbbell-shoulder-press",
+        "name": "Seated Dumbbell Shoulder Press",
+        "equip": "Dumbbells + Bench",
+        "primary": [
+          "sideDelts",
+          "frontDelts"
+        ],
+        "secondary": [
+          "triceps"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "90s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Brace your core, don't over-arch the lower back",
+          "Press slightly forward, not straight up",
+          "Full lockout without shrugging"
+        ],
+        "mistakes": [
+          "Excessive lower back arch",
+          "Elbows flaring too wide, too fast",
+          "Using leg drive to cheat the rep"
+        ],
+        "alt": "Machine Shoulder Press",
+        "tip": "Sit with back fully supported if lower back fatigue is an issue.",
+        "image": "/images/seated-dumbbell-shoulder-press.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "cable-machine-chest-fly",
+        "name": "Cable / Machine Chest Fly",
+        "equip": "Cable Machine",
+        "primary": [
+          "chest"
+        ],
+        "secondary": [],
+        "baseSets": 2,
+        "baseReps": "12\u201315",
+        "baseRest": "60s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Slight elbow bend held throughout",
+          "Squeeze at center",
+          "Controlled return, don't let the weight yank your arms back"
+        ],
+        "mistakes": [
+          "Turning it into a press",
+          "Bent elbows collapsing further under load",
+          "Using too much weight, sacrificing ROM"
+        ],
+        "alt": "Dumbbell Fly",
+        "tip": "Think \"hugging a tree,\" not pressing a barbell.",
+        "image": "/images/cable-machine-chest-fly.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "dumbbell-lateral-raise",
+        "name": "Dumbbell Lateral Raise",
+        "equip": "Dumbbells",
+        "primary": [
+          "sideDelts"
+        ],
+        "secondary": [
+          "traps"
+        ],
+        "baseSets": 3,
+        "baseReps": "12\u201315",
+        "baseRest": "60s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Lead with elbows",
+          "Stop at shoulder height",
+          "No shrugging through the traps"
+        ],
+        "mistakes": [
+          "Swinging with momentum",
+          "Raising above shoulder height",
+          "Using too heavy a weight"
+        ],
+        "alt": "Cable Lateral Raise",
+        "tip": "Go lighter than you think \u2014 strict form builds delts faster than momentum.",
+        "image": "/images/dumbbell-lateral-raise.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "cable-rope-triceps-pushdown",
+        "name": "Cable Rope Triceps Pushdown",
+        "equip": "Cable Machine",
+        "primary": [
+          "triceps"
+        ],
+        "secondary": [],
+        "baseSets": 3,
+        "baseReps": "12\u201315",
+        "baseRest": "60s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Elbows pinned to your sides",
+          "Full extension at the bottom",
+          "Controlled return, no bouncing"
+        ],
+        "mistakes": [
+          "Elbows drifting forward",
+          "Using body weight to push",
+          "Half reps"
+        ],
+        "alt": "Overhead Cable Extension",
+        "tip": "Split the rope apart at full extension for extra contraction.",
+        "image": "/images/cable-rope-triceps-pushdown.jpg",
+        "videoUrl": "https://www.youtube.com/watch?v=2-LAMcpzODU"
+      },
+      {
+        "slug": "overhead-triceps-extension",
+        "name": "Overhead Triceps Extension",
+        "equip": "Cable or Dumbbell",
+        "primary": [
+          "triceps"
+        ],
+        "secondary": [],
+        "baseSets": 2,
+        "baseReps": "12\u201315",
+        "baseRest": "60s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Elbows stay close to your head",
+          "Feel the stretch at the bottom",
+          "Control the negative"
+        ],
+        "mistakes": [
+          "Elbows flaring outward",
+          "Arching the back for extra range",
+          "Rushing the eccentric"
+        ],
+        "alt": "Skull Crusher",
+        "tip": "This hits the long head of the triceps \u2014 key for arm size.",
+        "image": "/images/overhead-triceps-extension.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "plank",
+        "name": "Plank",
+        "equip": "Bodyweight",
+        "primary": [
+          "abs"
+        ],
+        "secondary": [
+          "obliques",
+          "lowerBack"
+        ],
+        "baseSets": 3,
+        "baseReps": "30\u201345s hold",
+        "baseRest": "45s",
+        "baseRpe": "Hold with good form",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Neutral spine, ribs down",
+          "Squeeze glutes",
+          "Breathe steadily throughout"
+        ],
+        "mistakes": [
+          "Hips sagging",
+          "Hips piked too high",
+          "Holding your breath"
+        ],
+        "alt": "Dead Bug",
+        "tip": "Quality over duration \u2014 a clean 30s beats a sloppy 60s.",
+        "image": "/images/plank.jpg",
+        "videoUrl": null
+      }
+    ]
+  },
+  {
+    "key": "pullA",
+    "dayNumber": 2,
+    "name": "Pull A",
+    "subtitle": "Back, Biceps, Rear Delts",
+    "warmup": [
+      "Light cardio \u2014 3 min",
+      "Band pull-aparts \u2014 2\u00d715",
+      "Light lat pulldown / scap pulls \u2014 1\u00d715",
+      "Cat-cow \u2014 10 reps",
+      "Wrist circles \u2014 10 each way"
+    ],
+    "cooldown": [
+      "Lat stretch \u2014 30s/side",
+      "Biceps wall stretch \u2014 30s/side",
+      "Cat-cow \u2014 8 reps",
+      "Neck stretch \u2014 20s each direction"
+    ],
+    "exercises": [
+      {
+        "slug": "lat-pulldown",
+        "name": "Lat Pulldown",
+        "equip": "Cable Machine",
+        "primary": [
+          "lats"
+        ],
+        "secondary": [
+          "biceps",
+          "rearDelts"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "90s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Pull to upper chest",
+          "Drive elbows down and back",
+          "Avoid leaning back excessively"
+        ],
+        "mistakes": [
+          "Using body weight to yank the bar down",
+          "Pulling behind the neck",
+          "Not controlling the negative"
+        ],
+        "alt": "Assisted Pull-Up",
+        "tip": "Think \"elbows to pockets,\" not \"hands to chest.\"",
+        "image": "/images/lat-pulldown.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "seated-cable-row",
+        "name": "Seated Cable Row",
+        "equip": "Cable Machine",
+        "primary": [
+          "lats",
+          "traps"
+        ],
+        "secondary": [
+          "biceps",
+          "rearDelts"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "90s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Chest up, pull to lower ribs",
+          "Squeeze shoulder blades together",
+          "No momentum or rocking"
+        ],
+        "mistakes": [
+          "Rounding the lower back",
+          "Using torso swing to move the weight",
+          "Shrugging instead of retracting"
+        ],
+        "alt": "Chest-Supported Row",
+        "tip": "Pause 1 second at full contraction for extra back activation.",
+        "image": "/images/seated-cable-row.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "barbell-bent-over-row",
+        "name": "Barbell Bent-Over Row",
+        "equip": "Barbell",
+        "primary": [
+          "lats",
+          "traps"
+        ],
+        "secondary": [
+          "biceps",
+          "lowerBack"
+        ],
+        "baseSets": 3,
+        "baseReps": "8\u201310",
+        "baseRest": "120s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Hinge at hips ~45\u00b0, flat back",
+          "Pull to your lower chest",
+          "Control both the pull and the lowering"
+        ],
+        "mistakes": [
+          "Rounding the spine",
+          "Standing too upright (turns it into a shrug)",
+          "Using momentum to heave the bar up"
+        ],
+        "alt": "Smith Machine Row",
+        "tip": "Brace your core hard \u2014 this protects your lower back under load.",
+        "image": "/images/barbell-bent-over-row.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "machine-dumbbell-rear-delt-fly",
+        "name": "Machine / Dumbbell Rear Delt Fly",
+        "equip": "Machine or Dumbbells",
+        "primary": [
+          "rearDelts"
+        ],
+        "secondary": [
+          "traps"
+        ],
+        "baseSets": 2,
+        "baseReps": "12\u201315",
+        "baseRest": "60s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Slight elbow bend",
+          "Squeeze shoulder blades",
+          "Keep the weight light"
+        ],
+        "mistakes": [
+          "Using momentum",
+          "Turning it into a row",
+          "Going too heavy, losing ROM"
+        ],
+        "alt": "Cable Rear Delt Fly",
+        "tip": "Rear delts respond best to light weight and strict control.",
+        "image": "/images/machine-dumbbell-rear-delt-fly.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "barbell-dumbbell-curl",
+        "name": "Barbell / Dumbbell Curl",
+        "equip": "Barbell or Dumbbells",
+        "primary": [
+          "biceps"
+        ],
+        "secondary": [
+          "forearms"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "75s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Elbows pinned to sides",
+          "No swinging",
+          "Full range of motion"
+        ],
+        "mistakes": [
+          "Swinging the torso for momentum",
+          "Partial reps at the top",
+          "Elbows drifting forward"
+        ],
+        "alt": "Cable Curl",
+        "tip": "Squeeze at the top for a full second on your last set.",
+        "image": "/images/barbell-dumbbell-curl.jpg",
+        "videoUrl": "https://www.youtube.com/watch?v=LY1V6UbRHFM"
+      },
+      {
+        "slug": "hammer-curl",
+        "name": "Hammer Curl",
+        "equip": "Dumbbells",
+        "primary": [
+          "biceps",
+          "forearms"
+        ],
+        "secondary": [],
+        "baseSets": 2,
+        "baseReps": "12\u201315",
+        "baseRest": "60s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Neutral grip throughout",
+          "Controlled tempo both directions"
+        ],
+        "mistakes": [
+          "Swinging the weight up",
+          "Rotating the wrist mid-rep"
+        ],
+        "alt": "Rope Hammer Curl",
+        "tip": "Builds the brachialis \u2014 adds arm thickness beyond biceps peak.",
+        "image": "/images/hammer-curl.jpg",
+        "videoUrl": "https://www.youtube.com/watch?v=zC3nLlEvin4"
+      },
+      {
+        "slug": "hanging-knee-raise",
+        "name": "Hanging Knee Raise",
+        "equip": "Pull-up Bar",
+        "primary": [
+          "abs"
+        ],
+        "secondary": [
+          "obliques"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "60s",
+        "baseRpe": "Controlled",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Curl the pelvis at the top",
+          "No swinging",
+          "Control the descent"
+        ],
+        "mistakes": [
+          "Using momentum to swing the legs",
+          "Not curling the pelvis (just hip flexors)"
+        ],
+        "alt": "Lying Leg Raise",
+        "tip": "Think about lifting your hips, not just your knees.",
+        "image": "/images/hanging-knee-raise.jpg",
+        "videoUrl": null
+      }
+    ]
+  },
+  {
+    "key": "legsA",
+    "dayNumber": 3,
+    "name": "Legs A",
+    "subtitle": "Quads, Hamstrings, Glutes, Calves",
+    "warmup": [
+      "Light cardio (bike ideal) \u2014 3 min",
+      "Bodyweight squats \u2014 2\u00d715",
+      "Leg swings \u2014 10 each side",
+      "Walking lunges (bodyweight) \u2014 1\u00d710/leg",
+      "Glute bridges \u2014 1\u00d715"
+    ],
+    "cooldown": [
+      "Quad stretch \u2014 30s/side",
+      "Hamstring stretch \u2014 30s/side",
+      "Calf stretch \u2014 30s/side",
+      "Glute figure-4 stretch \u2014 30s/side"
+    ],
+    "exercises": [
+      {
+        "slug": "barbell-back-squat",
+        "name": "Barbell Back Squat",
+        "equip": "Barbell + Rack",
+        "primary": [
+          "quads",
+          "glutes"
+        ],
+        "secondary": [
+          "hamstrings",
+          "lowerBack"
+        ],
+        "baseSets": 3,
+        "baseReps": "8\u201310",
+        "baseRest": "120s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Chest up, knees track over toes",
+          "Hips and knees descend together",
+          "At least parallel depth"
+        ],
+        "mistakes": [
+          "Knees caving inward",
+          "Heels rising off the floor",
+          "Rounding the lower back"
+        ],
+        "alt": "Smith Machine Squat",
+        "tip": "Depth builds more muscle than load \u2014 don't sacrifice ROM for weight.",
+        "image": "/images/barbell-back-squat.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "romanian-deadlift",
+        "name": "Romanian Deadlift",
+        "equip": "Barbell or Dumbbells",
+        "primary": [
+          "hamstrings",
+          "glutes"
+        ],
+        "secondary": [
+          "lowerBack"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "120s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Soft knee bend, hinge at the hips",
+          "Bar stays close to your legs",
+          "Feel the hamstring stretch, not lower back"
+        ],
+        "mistakes": [
+          "Rounding the back",
+          "Bending the knees too much (turns into a squat)",
+          "Bar drifting away from the body"
+        ],
+        "alt": "Dumbbell RDL",
+        "tip": "Push your hips back like closing a car door with them.",
+        "image": "/images/romanian-deadlift.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "leg-press",
+        "name": "Leg Press",
+        "equip": "Leg Press Machine",
+        "primary": [
+          "quads",
+          "glutes"
+        ],
+        "secondary": [
+          "hamstrings"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "90s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Feet shoulder-width on the platform",
+          "Don't lock knees at the top",
+          "Control the negative"
+        ],
+        "mistakes": [
+          "Locking out knees hard",
+          "Letting knees cave in",
+          "Lowering too fast"
+        ],
+        "alt": "Hack Squat",
+        "tip": "Higher foot placement biases glutes/hamstrings, lower biases quads.",
+        "image": "/images/leg-press.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "dumbbell-walking-lunge",
+        "name": "Dumbbell Walking Lunge",
+        "equip": "Dumbbells",
+        "primary": [
+          "quads",
+          "glutes"
+        ],
+        "secondary": [
+          "hamstrings"
+        ],
+        "baseSets": 2,
+        "baseReps": "10\u201312/leg",
+        "baseRest": "90s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Front knee stays over the ankle",
+          "Torso upright",
+          "Even, controlled steps"
+        ],
+        "mistakes": [
+          "Leaning too far forward",
+          "Short, choppy steps",
+          "Knee crashing into the floor"
+        ],
+        "alt": "Reverse Lunge",
+        "tip": "Balance issues? Hold dumbbells lighter until stability improves.",
+        "image": "/images/dumbbell-walking-lunge.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "leg-curl-machine",
+        "name": "Leg Curl (machine)",
+        "equip": "Machine",
+        "primary": [
+          "hamstrings"
+        ],
+        "secondary": [],
+        "baseSets": 3,
+        "baseReps": "12\u201315",
+        "baseRest": "75s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Control the eccentric",
+          "Don't let hips lift off the pad"
+        ],
+        "mistakes": [
+          "Using momentum to kick the weight up",
+          "Hips rising off the bench"
+        ],
+        "alt": "Stability Ball Leg Curl",
+        "tip": "Squeeze hard at peak contraction for 1 second.",
+        "image": "/images/leg-curl-machine.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "standing-seated-calf-raise",
+        "name": "Standing / Seated Calf Raise",
+        "equip": "Machine",
+        "primary": [
+          "calves"
+        ],
+        "secondary": [],
+        "baseSets": 4,
+        "baseReps": "15\u201320",
+        "baseRest": "60s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Full stretch at the bottom",
+          "Pause and squeeze at the top"
+        ],
+        "mistakes": [
+          "Bouncing through the bottom",
+          "Partial range of motion"
+        ],
+        "alt": "Bodyweight Calf Raise on a step",
+        "tip": "Calves respond well to higher rep ranges and slower tempo.",
+        "image": "/images/standing-seated-calf-raise.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "cable-woodchopper-weighted-sit-up",
+        "name": "Cable Woodchopper / Weighted Sit-up",
+        "equip": "Cable or Plate",
+        "primary": [
+          "obliques",
+          "abs"
+        ],
+        "secondary": [],
+        "baseSets": 3,
+        "baseReps": "12\u201315",
+        "baseRest": "60s",
+        "baseRpe": "Controlled",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Rotate from the torso, not the arms",
+          "Controlled tempo throughout"
+        ],
+        "mistakes": [
+          "Using the arms to yank the weight",
+          "Rotating from the lower back instead of the core"
+        ],
+        "alt": "Russian Twist",
+        "tip": "Keep hips relatively square \u2014 the rotation comes from your ribcage.",
+        "image": "/images/cable-woodchopper-weighted-sit-up.jpg",
+        "videoUrl": null
+      }
+    ]
+  },
+  {
+    "key": "pushB",
+    "dayNumber": 4,
+    "name": "Push B",
+    "subtitle": "Chest, Shoulders, Triceps",
+    "warmup": [
+      "Light cardio \u2014 3 min",
+      "Arm circles \u2014 2\u00d715 each way",
+      "Band pull-aparts \u2014 2\u00d715",
+      "Push-up to downward dog \u2014 1\u00d78",
+      "Shoulder dislocates \u2014 1\u00d710"
+    ],
+    "cooldown": [
+      "Chest doorway stretch \u2014 30s/side",
+      "Overhead triceps stretch \u2014 30s/side",
+      "Shoulder cross-body stretch \u2014 30s/side",
+      "Child's pose \u2014 45s"
+    ],
+    "exercises": [
+      {
+        "slug": "incline-barbell-press",
+        "name": "Incline Barbell Press",
+        "equip": "Barbell + Incline Bench",
+        "primary": [
+          "chest"
+        ],
+        "secondary": [
+          "frontDelts",
+          "triceps"
+        ],
+        "baseSets": 3,
+        "baseReps": "8\u201310",
+        "baseRest": "120s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "30\u00b0 incline",
+          "Bar to upper chest",
+          "No bouncing off the chest"
+        ],
+        "mistakes": [
+          "Bench too steep",
+          "Flaring elbows to 90\u00b0",
+          "Uneven bar path"
+        ],
+        "alt": "Smith Machine Incline Press",
+        "tip": "Upper chest lags for most beginners \u2014 prioritize form here.",
+        "image": "/images/incline-barbell-press.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "flat-dumbbell-press",
+        "name": "Flat Dumbbell Press",
+        "equip": "Dumbbells + Bench",
+        "primary": [
+          "chest"
+        ],
+        "secondary": [
+          "triceps",
+          "frontDelts"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "90s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Full range of motion",
+          "Slight arc through the press",
+          "Control the descent"
+        ],
+        "mistakes": [
+          "Flaring elbows too wide",
+          "Bouncing dumbbells off the chest",
+          "Uneven arm paths"
+        ],
+        "alt": "Machine Chest Press",
+        "tip": "Dumbbells allow a deeper stretch than a barbell \u2014 use it.",
+        "image": "/images/flat-dumbbell-press.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "standing-dumbbell-arnold-press",
+        "name": "Standing Dumbbell Arnold Press",
+        "equip": "Dumbbells",
+        "primary": [
+          "sideDelts",
+          "frontDelts"
+        ],
+        "secondary": [
+          "triceps"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "90s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Rotate palms outward as you press",
+          "Avoid over-arching the lower back"
+        ],
+        "mistakes": [
+          "Using leg drive to cheat the rep",
+          "Excessive back arch"
+        ],
+        "alt": "Seated Dumbbell Press",
+        "tip": "The rotation hits all three delt heads through the movement.",
+        "image": "/images/standing-dumbbell-arnold-press.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "cable-crossover",
+        "name": "Cable Crossover",
+        "equip": "Cable Machine",
+        "primary": [
+          "chest"
+        ],
+        "secondary": [],
+        "baseSets": 2,
+        "baseReps": "12\u201315",
+        "baseRest": "60s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Slight forward lean",
+          "Squeeze at the center",
+          "Controlled return"
+        ],
+        "mistakes": [
+          "Turning it into a press",
+          "Standing too upright"
+        ],
+        "alt": "Pec Deck Machine",
+        "tip": "Set the pulley at mid-height to target the mid-chest.",
+        "image": "/images/cable-crossover.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "single-arm-cable-lateral-raise",
+        "name": "Single-Arm Cable Lateral Raise",
+        "equip": "Cable Machine",
+        "primary": [
+          "sideDelts"
+        ],
+        "secondary": [],
+        "baseSets": 3,
+        "baseReps": "12\u201315/side",
+        "baseRest": "60s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Constant tension from the cable",
+          "No torso swinging"
+        ],
+        "mistakes": [
+          "Using body momentum",
+          "Raising too high, involving traps"
+        ],
+        "alt": "Dumbbell Lateral Raise",
+        "tip": "Cables keep tension on the delt throughout the entire rep.",
+        "image": "/images/single-arm-cable-lateral-raise.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "bench-dip-machine-assisted-dip",
+        "name": "Bench Dip / Machine-Assisted Dip",
+        "equip": "Bench or Dip Machine",
+        "primary": [
+          "triceps"
+        ],
+        "secondary": [
+          "chest",
+          "frontDelts"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "75s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Elbows track backward, not outward",
+          "Controlled depth",
+          "Don't overextend the shoulders"
+        ],
+        "mistakes": [
+          "Going too deep and straining shoulders",
+          "Flaring elbows outward"
+        ],
+        "alt": "Cable Triceps Pushdown",
+        "tip": "Stop the descent when you feel a stretch, not pain, in the shoulder.",
+        "image": "/images/bench-dip-machine-assisted-dip.jpg",
+        "videoUrl": "https://www.youtube.com/watch?v=sM6XUdt1rm4"
+      },
+      {
+        "slug": "skull-crusher",
+        "name": "Skull Crusher",
+        "equip": "EZ Bar or Dumbbells",
+        "primary": [
+          "triceps"
+        ],
+        "secondary": [],
+        "baseSets": 2,
+        "baseReps": "12\u201315",
+        "baseRest": "60s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Elbows stay stationary",
+          "Control the weight to forehead level"
+        ],
+        "mistakes": [
+          "Elbows flaring out",
+          "Moving the upper arm during the rep"
+        ],
+        "alt": "Cable Overhead Extension",
+        "tip": "Lower to just above the forehead, not to the nose \u2014 protect the elbows.",
+        "image": "/images/skull-crusher.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "plank",
+        "name": "Plank",
+        "equip": "Bodyweight",
+        "primary": [
+          "abs"
+        ],
+        "secondary": [
+          "obliques",
+          "lowerBack"
+        ],
+        "baseSets": 3,
+        "baseReps": "30\u201345s hold",
+        "baseRest": "45s",
+        "baseRpe": "Hold with good form",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Neutral spine, ribs down",
+          "Squeeze glutes"
+        ],
+        "mistakes": [
+          "Hips sagging",
+          "Holding your breath"
+        ],
+        "alt": "Dead Bug",
+        "tip": "Same cue as Push A \u2014 quality over duration.",
+        "image": "/images/plank.jpg",
+        "videoUrl": null
+      }
+    ]
+  },
+  {
+    "key": "pullB",
+    "dayNumber": 5,
+    "name": "Pull B",
+    "subtitle": "Back, Biceps, Rear Delts",
+    "warmup": [
+      "Light cardio \u2014 3 min",
+      "Band pull-aparts \u2014 2\u00d715",
+      "Light lat pulldown / scap pulls \u2014 1\u00d715",
+      "Cat-cow \u2014 10 reps",
+      "Wrist circles \u2014 10 each way"
+    ],
+    "cooldown": [
+      "Lat stretch \u2014 30s/side",
+      "Biceps wall stretch \u2014 30s/side",
+      "Cat-cow \u2014 8 reps",
+      "Neck stretch \u2014 20s each direction"
+    ],
+    "exercises": [
+      {
+        "slug": "pull-up-lat-pulldown-wide-grip",
+        "name": "Pull-Up / Lat Pulldown (wide grip)",
+        "equip": "Pull-up Bar or Cable",
+        "primary": [
+          "lats"
+        ],
+        "secondary": [
+          "biceps",
+          "rearDelts"
+        ],
+        "baseSets": 3,
+        "baseReps": "6\u201310",
+        "baseRest": "120s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Full hang at the bottom",
+          "Chin over the bar (or chest to bar)",
+          "No kipping"
+        ],
+        "mistakes": [
+          "Using momentum / kipping",
+          "Partial range of motion",
+          "Shrugging instead of pulling"
+        ],
+        "alt": "Assisted Pull-Up Machine",
+        "tip": "Can't do a full pull-up yet? Use the assisted machine and reduce assistance over time.",
+        "image": "/images/pull-up-lat-pulldown-wide-grip.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "single-arm-dumbbell-row",
+        "name": "Single-Arm Dumbbell Row",
+        "equip": "Dumbbell + Bench",
+        "primary": [
+          "lats"
+        ],
+        "secondary": [
+          "biceps",
+          "traps"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312/side",
+        "baseRest": "90s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Flat back throughout",
+          "Pull elbow past your torso",
+          "Don't rotate through the trunk"
+        ],
+        "mistakes": [
+          "Rotating the torso to cheat the weight up",
+          "Rounding the back"
+        ],
+        "alt": "Chest-Supported Row",
+        "tip": "Brace your free hand firmly on the bench for stability.",
+        "image": "/images/single-arm-dumbbell-row.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "chest-supported-dumbbell-row",
+        "name": "Chest-Supported Dumbbell Row",
+        "equip": "Dumbbells + Incline Bench",
+        "primary": [
+          "lats",
+          "traps"
+        ],
+        "secondary": [
+          "biceps",
+          "rearDelts"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "90s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Pull to your hips",
+          "Squeeze shoulder blades",
+          "Minimal momentum"
+        ],
+        "mistakes": [
+          "Lifting chest off the bench",
+          "Using momentum instead of the back"
+        ],
+        "alt": "Seated Cable Row",
+        "tip": "Chest support removes lower-back cheat \u2014 pure back isolation.",
+        "image": "/images/chest-supported-dumbbell-row.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "cable-face-pull",
+        "name": "Cable Face Pull",
+        "equip": "Cable Machine",
+        "primary": [
+          "rearDelts"
+        ],
+        "secondary": [
+          "traps"
+        ],
+        "baseSets": 3,
+        "baseReps": "15\u201320",
+        "baseRest": "60s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Pull to eye level",
+          "Rotate hands outward at the end",
+          "Keep the weight light"
+        ],
+        "mistakes": [
+          "Pulling too low (turns into a row)",
+          "Using heavy weight, losing form"
+        ],
+        "alt": "Band Face Pull",
+        "tip": "Great shoulder-health exercise \u2014 never skip this one.",
+        "image": "/images/cable-face-pull.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "ez-bar-barbell-curl",
+        "name": "EZ-Bar / Barbell Curl",
+        "equip": "EZ Bar or Barbell",
+        "primary": [
+          "biceps"
+        ],
+        "secondary": [
+          "forearms"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "75s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Elbows pinned to sides",
+          "No swinging",
+          "Full range of motion"
+        ],
+        "mistakes": [
+          "Swinging for momentum",
+          "Partial reps"
+        ],
+        "alt": "Dumbbell Curl",
+        "tip": "EZ bar reduces wrist strain versus a straight bar.",
+        "image": "/images/ez-bar-barbell-curl.jpg",
+        "videoUrl": "https://www.youtube.com/watch?v=zG2xJ0Q5QtI"
+      },
+      {
+        "slug": "dumbbell-concentration-curl",
+        "name": "Dumbbell Concentration Curl",
+        "equip": "Dumbbell",
+        "primary": [
+          "biceps"
+        ],
+        "secondary": [],
+        "baseSets": 2,
+        "baseReps": "12\u201315/side",
+        "baseRest": "60s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Brace elbow on inner thigh",
+          "Full stretch and squeeze"
+        ],
+        "mistakes": [
+          "Using the shoulder to assist the curl",
+          "Rushing the eccentric"
+        ],
+        "alt": "Preacher Curl",
+        "tip": "Slow this one down \u2014 it's about peak contraction, not speed.",
+        "image": "/images/dumbbell-concentration-curl.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "cable-crunch",
+        "name": "Cable Crunch",
+        "equip": "Cable Machine",
+        "primary": [
+          "abs"
+        ],
+        "secondary": [],
+        "baseSets": 3,
+        "baseReps": "12\u201315",
+        "baseRest": "60s",
+        "baseRpe": "Controlled",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Round through the spine",
+          "Pull with your abs, not your arms"
+        ],
+        "mistakes": [
+          "Using arms to pull the weight",
+          "Hips moving instead of the spine flexing"
+        ],
+        "alt": "Weighted Sit-up",
+        "tip": "Kneel close to the pulley so the resistance stays on your abs.",
+        "image": "/images/cable-crunch.jpg",
+        "videoUrl": null
+      }
+    ]
+  },
+  {
+    "key": "legsB",
+    "dayNumber": 6,
+    "name": "Legs B",
+    "subtitle": "Quads, Hamstrings, Glutes, Calves",
+    "warmup": [
+      "Light cardio (bike ideal) \u2014 3 min",
+      "Bodyweight squats \u2014 2\u00d715",
+      "Leg swings \u2014 10 each side",
+      "Walking lunges (bodyweight) \u2014 1\u00d710/leg",
+      "Glute bridges \u2014 1\u00d715"
+    ],
+    "cooldown": [
+      "Quad stretch \u2014 30s/side",
+      "Hamstring stretch \u2014 30s/side",
+      "Calf stretch \u2014 30s/side",
+      "Glute figure-4 stretch \u2014 30s/side"
+    ],
+    "exercises": [
+      {
+        "slug": "bulgarian-split-squat",
+        "name": "Bulgarian Split Squat",
+        "equip": "Dumbbells + Bench",
+        "primary": [
+          "quads",
+          "glutes"
+        ],
+        "secondary": [
+          "hamstrings"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312/leg",
+        "baseRest": "90s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Torso upright",
+          "Front knee tracks over the ankle",
+          "Don't let it cave inward"
+        ],
+        "mistakes": [
+          "Knee caving inward",
+          "Rear foot placed too close (limits depth)"
+        ],
+        "alt": "Reverse Lunge",
+        "tip": "Balance is the hardest part at first \u2014 hold onto something if needed.",
+        "image": "/images/bulgarian-split-squat.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "hip-thrust",
+        "name": "Hip Thrust",
+        "equip": "Barbell or Smith Machine",
+        "primary": [
+          "glutes"
+        ],
+        "secondary": [
+          "hamstrings"
+        ],
+        "baseSets": 3,
+        "baseReps": "10\u201312",
+        "baseRest": "120s",
+        "baseRpe": "RPE 7\u20138",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Chin tucked",
+          "Drive through your heels",
+          "Squeeze glutes hard at lockout"
+        ],
+        "mistakes": [
+          "Overextending the lower back at the top",
+          "Not reaching full hip extension"
+        ],
+        "alt": "Glute Bridge",
+        "tip": "Pause 1\u20132 seconds at the top to maximize glute contraction.",
+        "image": "/images/hip-thrust.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "leg-extension-machine",
+        "name": "Leg Extension (machine)",
+        "equip": "Machine",
+        "primary": [
+          "quads"
+        ],
+        "secondary": [],
+        "baseSets": 3,
+        "baseReps": "12\u201315",
+        "baseRest": "75s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Controlled tempo",
+          "Brief pause at the top",
+          "Don't slam the weight stack"
+        ],
+        "mistakes": [
+          "Using momentum to kick up",
+          "Slamming the weight down"
+        ],
+        "alt": "Sissy Squat",
+        "tip": "Great finisher for quad isolation after compound lifts.",
+        "image": "/images/leg-extension-machine.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "seated-lying-leg-curl",
+        "name": "Seated / Lying Leg Curl",
+        "equip": "Machine",
+        "primary": [
+          "hamstrings"
+        ],
+        "secondary": [],
+        "baseSets": 3,
+        "baseReps": "12\u201315",
+        "baseRest": "75s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Control the eccentric",
+          "Don't let hips lift off the pad"
+        ],
+        "mistakes": [
+          "Momentum kicking the weight up",
+          "Hips rising off the pad"
+        ],
+        "alt": "Nordic Curl (advanced progression)",
+        "tip": "Same cue as Legs A \u2014 control beats speed here.",
+        "image": "/images/seated-lying-leg-curl.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "dumbbell-step-up",
+        "name": "Dumbbell Step-Up",
+        "equip": "Dumbbells + Bench",
+        "primary": [
+          "quads",
+          "glutes"
+        ],
+        "secondary": [
+          "hamstrings"
+        ],
+        "baseSets": 2,
+        "baseReps": "10\u201312/leg",
+        "baseRest": "90s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Drive through the heel of the working leg",
+          "Controlled descent"
+        ],
+        "mistakes": [
+          "Pushing off the back leg",
+          "Stepping onto a box that's too high"
+        ],
+        "alt": "Box Step-Up",
+        "tip": "Use a bench height where your knee doesn't exceed 90\u00b0 at the bottom.",
+        "image": "/images/dumbbell-step-up.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "seated-calf-raise-machine",
+        "name": "Seated Calf Raise (machine)",
+        "equip": "Machine",
+        "primary": [
+          "calves"
+        ],
+        "secondary": [],
+        "baseSets": 4,
+        "baseReps": "15\u201320",
+        "baseRest": "60s",
+        "baseRpe": "RPE 8",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Full stretch at the bottom",
+          "Pause and squeeze at the top"
+        ],
+        "mistakes": [
+          "Bouncing through the bottom range",
+          "Partial reps"
+        ],
+        "alt": "Standing Calf Raise",
+        "tip": "Seated position emphasizes the soleus (lower calf).",
+        "image": "/images/seated-calf-raise-machine.jpg",
+        "videoUrl": null
+      },
+      {
+        "slug": "weighted-russian-twist-hanging-leg-raise",
+        "name": "Weighted Russian Twist / Hanging Leg Raise",
+        "equip": "Plate or Pull-up Bar",
+        "primary": [
+          "obliques",
+          "abs"
+        ],
+        "secondary": [],
+        "baseSets": 3,
+        "baseReps": "12\u201315",
+        "baseRest": "60s",
+        "baseRpe": "Controlled",
+        "tempo": "2-1-2",
+        "difficulty": "beginner",
+        "breathing": "Exhale on exertion (the lift), inhale on the lowering phase.",
+        "cues": [
+          "Rotate from the core",
+          "Controlled movement \u2014 no momentum"
+        ],
+        "mistakes": [
+          "Relying on arm swing instead of core rotation",
+          "Feet slamming the floor between reps"
+        ],
+        "alt": "Cable Woodchopper",
+        "tip": "Last exercise of the week \u2014 finish with intent.",
+        "image": "/images/weighted-russian-twist-hanging-leg-raise.jpg",
+        "videoUrl": null
+      }
+    ]
+  }
+]

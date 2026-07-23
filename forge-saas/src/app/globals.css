@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0a0b0f;
+  --bg-2: #101219;
+  --surface: rgba(255, 255, 255, 0.045);
+  --surface-hi: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.09);
+  --border-hi: rgba(255, 255, 255, 0.16);
+  --text: #f2f3f7;
+  --text-dim: #9aa0ae;
+  --text-faint: #5c6270;
+  --violet: #8b5cf6;
+  --cyan: #22d3ee;
+  --volt: #c6ff3d;
+  --amber: #ffb020;
+  --rose: #fb7185;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-surface-hi: var(--surface-hi);
+  --color-border: var(--border);
+  --color-border-hi: var(--border-hi);
+  --color-text: var(--text);
+  --color-text-dim: var(--text-dim);
+  --color-text-faint: var(--text-faint);
+  --color-violet: var(--violet);
+  --color-cyan: var(--cyan);
+  --color-volt: var(--volt);
+  --color-amber: var(--amber);
+  --color-rose: var(--rose);
+  --font-display: var(--font-sora);
+  --font-body: var(--font-inter);
+  --font-mono-brand: var(--font-jbmono);
+}
+
+*{ -webkit-tap-highlight-color: transparent; }
+
+body {
+  background:
+    radial-gradient(ellipse 900px 500px at 15% -5%, rgba(139, 92, 246, 0.2), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 100% 10%, rgba(34, 211, 238, 0.12), transparent 60%),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font-body), sans-serif;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-radius: 18px;
+}
