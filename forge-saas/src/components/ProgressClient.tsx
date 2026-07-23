@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { estimated1RM } from "@/lib/tracking";
 import { Card } from "./ui";
+import { Logo } from "./Logo";
 
 interface SetRow {
   log_date: string;
@@ -67,8 +68,8 @@ export default function ProgressClient({ sets, personalRecords, streak }: Props)
   return (
     <main className="mx-auto max-w-5xl px-4 pb-24 pt-6 sm:px-6">
       <header className="mb-6 flex items-center justify-between">
-        <Link href="/dashboard" className="font-[family-name:var(--font-display)] text-lg font-extrabold">
-          FORGE
+        <Link href="/dashboard">
+          <Logo />
         </Link>
         <Link href="/dashboard" className="text-xs text-[var(--text-faint)] hover:text-[var(--text)]">
           ← Back to today
@@ -132,7 +133,7 @@ export default function ProgressClient({ sets, personalRecords, streak }: Props)
                 {currentPRs.map((pr) => (
                   <div
                     key={pr.exercise_slug}
-                    className="flex items-center justify-between border-b border-[var(--border)] py-2 text-sm last:border-none"
+                    className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-[var(--border)] py-2 text-sm last:border-none"
                   >
                     <span>{pr.exercise_name}</span>
                     <span className="font-mono font-bold text-[var(--volt)]">
