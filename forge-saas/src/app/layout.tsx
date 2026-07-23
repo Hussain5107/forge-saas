@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Sora, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -24,6 +24,15 @@ export const metadata: Metadata = {
   title: "FORGE — Your Personalized 6-Day Program",
   description:
     "Answer a few questions and get a personalized 6-day Push/Pull/Legs program with real exercise photos, video demos, and nutrition targets.",
+  appleWebApp: {
+    title: "FORGE",
+    statusBarStyle: "black-translucent",
+    capable: true,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0a0b0f",
 };
 
 export default function RootLayout({

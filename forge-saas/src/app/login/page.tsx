@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button, Card, ErrorText, Input, Label } from "@/components/ui";
+import { Logo } from "@/components/Logo";
 
 export default function LoginPage() {
   return (
@@ -44,8 +45,8 @@ function LoginForm() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-sm flex-col justify-center px-6 py-12">
-      <Link href="/" className="mb-8 text-center font-[family-name:var(--font-display)] text-xl font-extrabold">
-        FORGE
+      <Link href="/" className="mb-8 flex justify-center">
+        <Logo className="text-xl" />
       </Link>
 
       <Card className="p-6">

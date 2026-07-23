@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { Button, Card } from "@/components/ui";
+import { Logo } from "@/components/Logo";
 
 export default function PricingPage() {
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-10">
       <header className="mb-16 flex items-center justify-between">
-        <Link href="/" className="font-[family-name:var(--font-display)] text-xl font-extrabold">
-          FORGE
+        <Link href="/">
+          <Logo className="text-xl" />
         </Link>
         <Link href="/signup">
           <Button variant="primary">Get started</Button>

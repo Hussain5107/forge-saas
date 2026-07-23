@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Button, Card, ErrorText, Input, Label } from "@/components/ui";
+import { Logo } from "@/components/Logo";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -36,8 +37,8 @@ export default function SignupPage() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-sm flex-col justify-center px-6 py-12">
-      <Link href="/" className="mb-8 text-center font-[family-name:var(--font-display)] text-xl font-extrabold">
-        FORGE
+      <Link href="/" className="mb-8 flex justify-center">
+        <Logo className="text-xl" />
       </Link>
 
       <Card className="p-6">

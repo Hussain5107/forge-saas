@@ -4,6 +4,7 @@ import { Button, Card } from "@/components/ui";
 import LandingNav from "@/components/landing/LandingNav";
 import Reveal from "@/components/landing/Reveal";
 import DashboardPreview from "@/components/landing/DashboardPreview";
+import { Logo } from "@/components/Logo";
 
 const STATS = [
   { value: "6", label: "Day PPL program" },
@@ -270,7 +271,7 @@ export default function LandingPage() {
 
         {/* Footer */}
         <footer className="mt-16 flex flex-col items-center gap-4 border-t border-[var(--border)] py-10 text-center sm:flex-row sm:justify-between sm:text-left">
-          <div className="font-[family-name:var(--font-display)] text-lg font-extrabold">FORGE</div>
+          <Logo />
           <nav className="flex gap-6 text-sm text-[var(--text-dim)]">
             <Link href="/pricing" className="hover:text-[var(--text)]">
               Pricing

@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { submitOnboarding, type OnboardingState } from "./actions";
 import { Button, Card, ErrorText, Input, Label, Select } from "@/components/ui";
+import { Logo } from "@/components/Logo";
 
 const initialState: OnboardingState = {};
 
@@ -12,7 +13,9 @@ export default function OnboardingPage() {
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-lg flex-col justify-center px-6 py-12">
       <div className="mb-8 text-center">
-        <div className="mb-2 font-[family-name:var(--font-display)] text-xl font-extrabold">FORGE</div>
+        <div className="mb-2 flex justify-center">
+          <Logo className="text-xl" />
+        </div>
         <h1 className="text-2xl font-extrabold">Let&apos;s build your program</h1>
         <p className="mt-1 text-sm text-[var(--text-dim)]">
           A few quick questions, then your personalized 6-day plan is ready.
