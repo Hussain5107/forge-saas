@@ -188,3 +188,139 @@ create policy "streaks: upsert own" on public.streaks
 drop policy if exists "streaks: update own" on public.streaks;
 create policy "streaks: update own" on public.streaks
   for update using (auth.uid() = user_id);
+
+-- 7. PROFILE EXTENSIONS ---------------------------------------------------
+-- Additional optional profile fields, editable any time from Settings.
+
+alter table public.profiles add column if not exists date_of_birth date;
+alter table public.profiles add column if not exists country text;
+alter table public.profiles add column if not exists phone_number text;
+alter table public.profiles add column if not exists avatar_url text;
+alter table public.profiles add column if not exists has_diabetes boolean not null default false;
+alter table public.profiles add column if not exists has_high_blood_pressure boolean not null default false;
+alter table public.profiles add column if not exists other_health_notes text;
+alter table public.profiles add column if not exists water_reminder_enabled boolean not null default false;
+alter table public.profiles add column if not exists water_reminder_hour int check (water_reminder_hour between 0 and 23) default 10;
+alter table public.profiles add column if not exists workout_reminder_enabled boolean not null default false;
+alter table public.profiles add column if not exists workout_reminder_hour int check (workout_reminder_hour between 0 and 23) default 7;
+
+-- 8. REVIEWS ---------------------------------------------------------------
+-- Real, user-submitted reviews only. One per user; existence of a row means
+-- "never prompt again."
+
+create table if not exists public.reviews (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null unique references public.profiles (id) on delete cascade,
+  rating int not null check (rating between 1 and 5),
+  comment text,
+  created_at timestamptz not null default now()
+);
+
+alter table public.reviews enable row level security;
+
+drop policy if exists "reviews: select own" on public.reviews;
+create policy "reviews: select own" on public.reviews
+  for select using (auth.uid() = user_id);
+
+drop policy if exists "reviews: insert own" on public.reviews;
+create policy "reviews: insert own" on public.reviews
+  for insert with check (auth.uid() = user_id);
+
+-- 9. PROGRESS_PHOTOS ---------------------------------------------------------
+-- Before/after photos so users can compare progress across months.
+
+create table if not exists public.progress_photos (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.profiles (id) on delete cascade,
+  photo_url text not null,
+  taken_at date not null,
+  note text,
+  created_at timestamptz not null default now()
+);
+
+alter table public.progress_photos enable row level security;
+
+drop policy if exists "progress_photos: select own" on public.progress_photos;
+create policy "progress_photos: select own" on public.progress_photos
+  for select using (auth.uid() = user_id);
+
+drop policy if exists "progress_photos: insert own" on public.progress_photos;
+create policy "progress_photos: insert own" on public.progress_photos
+  for insert with check (auth.uid() = user_id);
+
+drop policy if exists "progress_photos: delete own" on public.progress_photos;
+create policy "progress_photos: delete own" on public.progress_photos
+  for delete using (auth.uid() = user_id);
+
+create index if not exists progress_photos_user_date_idx on public.progress_photos (user_id, taken_at);
+
+-- Storage bucket for progress photos + avatars. Run once; safe to re-run.
+insert into storage.buckets (id, name, public)
+values ('progress-photos', 'progress-photos', true)
+on conflict (id) do nothing;
+
+drop policy if exists "progress-photos: read own" on storage.objects;
+create policy "progress-photos: read own" on storage.objects
+  for select using (bucket_id = 'progress-photos' and auth.uid()::text = (storage.foldername(name))[1]);
+
+drop policy if exists "progress-photos: insert own" on storage.objects;
+create policy "progress-photos: insert own" on storage.objects
+  for insert with check (bucket_id = 'progress-photos' and auth.uid()::text = (storage.foldername(name))[1]);
+
+drop policy if exists "progress-photos: delete own" on storage.objects;
+create policy "progress-photos: delete own" on storage.objects
+  for delete using (bucket_id = 'progress-photos' and auth.uid()::text = (storage.foldername(name))[1]);
+
+-- 10. HEALTH_METRICS ---------------------------------------------------------
+-- Optional daily health tracking (blood pressure etc.), logged after workouts.
+
+create table if not exists public.health_metrics (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.profiles (id) on delete cascade,
+  log_date date not null,
+  systolic int check (systolic between 60 and 260),
+  diastolic int check (diastolic between 40 and 160),
+  pulse int check (pulse between 30 and 220),
+  notes text,
+  logged_at timestamptz not null default now()
+);
+
+alter table public.health_metrics enable row level security;
+
+drop policy if exists "health_metrics: select own" on public.health_metrics;
+create policy "health_metrics: select own" on public.health_metrics
+  for select using (auth.uid() = user_id);
+
+drop policy if exists "health_metrics: insert own" on public.health_metrics;
+create policy "health_metrics: insert own" on public.health_metrics
+  for insert with check (auth.uid() = user_id);
+
+create index if not exists health_metrics_user_date_idx on public.health_metrics (user_id, log_date);
+
+-- 11. PUSH_SUBSCRIPTIONS ------------------------------------------------------
+-- Web Push subscriptions for reminder notifications (one browser install per row).
+
+create table if not exists public.push_subscriptions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.profiles (id) on delete cascade,
+  endpoint text not null unique,
+  p256dh text not null,
+  auth_key text not null,
+  created_at timestamptz not null default now()
+);
+
+alter table public.push_subscriptions enable row level security;
+
+drop policy if exists "push_subscriptions: select own" on public.push_subscriptions;
+create policy "push_subscriptions: select own" on public.push_subscriptions
+  for select using (auth.uid() = user_id);
+
+drop policy if exists "push_subscriptions: insert own" on public.push_subscriptions;
+create policy "push_subscriptions: insert own" on public.push_subscriptions
+  for insert with check (auth.uid() = user_id);
+
+drop policy if exists "push_subscriptions: delete own" on public.push_subscriptions;
+create policy "push_subscriptions: delete own" on public.push_subscriptions
+  for delete using (auth.uid() = user_id);
+
+create index if not exists push_subscriptions_user_idx on public.push_subscriptions (user_id);

@@ -80,6 +80,12 @@ export default async function DashboardPage() {
     .eq("user_id", user.id)
     .maybeSingle();
 
+  const { data: reviewRow } = await supabase
+    .from("reviews")
+    .select("id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
   return (
     <DashboardClient
       email={user.email ?? ""}
@@ -93,6 +99,9 @@ export default async function DashboardPage() {
         total: streakRow?.total_workouts ?? 0,
       }}
       weekDates={weekDates}
+      accountCreatedAt={profile.created_at}
+      alreadyReviewed={!!reviewRow}
+      dateOfBirth={profile.date_of_birth}
     />
   );
 }

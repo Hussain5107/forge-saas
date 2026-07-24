@@ -162,3 +162,13 @@ export async function getStreak(): Promise<StreakState> {
     totalWorkouts: data?.total_workouts ?? 0,
   };
 }
+
+export async function submitReview(rating: number, comment: string) {
+  const { supabase, userId } = await requireUser();
+  await supabase.from("reviews").insert({
+    user_id: userId,
+    rating,
+    comment: comment.trim() || null,
+  });
+  revalidatePath("/dashboard");
+}

@@ -10,6 +10,9 @@ import NutritionPanel from "./NutritionPanel";
 import { Button } from "./ui";
 import { toggleExerciseDone, saveExerciseNote, logSet } from "@/app/dashboard/actions";
 import { Logo } from "./Logo";
+import ReviewPrompt from "./ReviewPrompt";
+import InstallAppPrompt from "./InstallAppPrompt";
+import { isBirthdayToday } from "@/lib/dates";
 
 interface ProgressRow {
   log_date: string;
@@ -35,6 +38,9 @@ interface Props {
   previousBestByExercise: Record<string, LoggedSet>;
   streak: { current: number; longest: number; total: number };
   weekDates: string[]; // 7 ISO dates, index 0 = Sunday
+  accountCreatedAt: string;
+  alreadyReviewed: boolean;
+  dateOfBirth: string | null;
 }
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -47,6 +53,9 @@ export default function DashboardClient({
   previousBestByExercise,
   streak,
   weekDates,
+  accountCreatedAt,
+  alreadyReviewed,
+  dateOfBirth,
 }: Props) {
   const today = new Date();
   const [selectedIndex, setSelectedIndex] = useState(today.getDay());
@@ -159,6 +168,9 @@ export default function DashboardClient({
           <Link href="/dashboard/progress" className="hover:text-[var(--text)]">
             Progress
           </Link>
+          <Link href="/dashboard/settings" className="hover:text-[var(--text)]">
+            Settings
+          </Link>
           <span className="hidden sm:inline">{email}</span>
           <form action="/auth/signout" method="post">
             <Button type="submit" className="px-3 py-1.5 text-xs">
@@ -167,6 +179,19 @@ export default function DashboardClient({
           </form>
         </div>
       </header>
+
+      <InstallAppPrompt />
+      <ReviewPrompt accountCreatedAt={accountCreatedAt} alreadyReviewed={alreadyReviewed} />
+
+      {isBirthdayToday(dateOfBirth) && (
+        <div className="mb-6 rounded-2xl border border-[rgba(255,176,32,0.4)] bg-gradient-to-br from-[rgba(255,176,32,0.15)] to-[rgba(139,92,246,0.15)] p-5 text-center">
+          <div className="text-3xl">🎂</div>
+          <h2 className="mt-1 text-lg font-extrabold">Happy Birthday!</h2>
+          <p className="mt-1 text-sm text-[var(--text-dim)]">
+            Another year stronger. Make today's session count.
+          </p>
+        </div>
+      )}
 
       <NutritionPanel nutrition={program.nutrition} />
 
