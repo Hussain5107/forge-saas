@@ -82,6 +82,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Hips sagging or piking up", "Only doing a half range of motion"],
         alt: "Incline Push-Up (hands elevated) if too hard",
         tip: "This is your main chest lift for the day — treat it like a heavy compound, not a warm-up.",
+        videoUrl: "https://www.youtube.com/watch?v=IODxDxX7oi4",
       }),
       ex({
         slug: "decline-push-up",
@@ -112,6 +113,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Letting the hips drop toward a regular push-up", "Flaring elbows too wide"],
         alt: "Standing Dumbbell Shoulder Press",
         tip: "The higher your hips, the more this loads the shoulders like an overhead press.",
+        videoUrl: "https://www.youtube.com/watch?v=DG-NcMnfZ_0",
       }),
       ex({
         slug: "diamond-push-up",
@@ -127,6 +129,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Flaring elbows out wide", "Sagging hips"],
         alt: "Regular Push-Up",
         tip: "Drop to your knees to keep good form if the full version breaks down early.",
+        videoUrl: "https://www.youtube.com/watch?v=l02EZAm-qn0",
       }),
       ex({
         slug: "tricep-dip-bench",
@@ -141,6 +144,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Shoulders shrugging up toward the ears", "Going too deep and straining the shoulder joint"],
         alt: "Diamond Push-Up",
         tip: "Bend your knees and keep feet closer to the bench to make this easier while you build strength.",
+        videoUrl: "https://www.youtube.com/watch?v=j_WpuVY3wbo",
       }),
       reuseGymPlank(),
       ex({
@@ -156,6 +160,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Hips rocking side to side", "Rushing the taps"],
         alt: "Plank",
         tip: "Slower is harder here — the goal is a still, stable torso while your hand moves.",
+        videoUrl: "https://www.youtube.com/watch?v=0PrTUpElJ44",
       }),
     ],
   },
@@ -181,6 +186,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Using furniture that isn't sturdy enough — test it with weight first", "Sagging hips"],
         alt: "Superman",
         tip: "Walk your feet further away to make it harder, closer in to make it easier — same movement, adjustable difficulty.",
+        videoUrl: "https://www.youtube.com/watch?v=Fl0UMfdEzsE",
       }),
       ex({
         slug: "superman",
@@ -195,6 +201,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Yanking upward instead of a controlled lift", "Holding your breath"],
         alt: "Bird Dog",
         tip: "This is a small range of motion — a controlled few inches beats a big jerky lift.",
+        videoUrl: "https://www.youtube.com/watch?v=cZxtPxeR2H8",
       }),
       ex({
         slug: "prone-y-raise",
@@ -238,6 +245,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Locking the elbow straight (no tension)", "Leaning with a rounded back"],
         alt: "Table Inverted Row",
         tip: "This is an isometric hold — pull hard enough that you genuinely feel the back working.",
+        videoUrl: "https://www.youtube.com/watch?v=lfPrQ8jahkM",
       }),
       ex({
         slug: "towel-isometric-curl",
@@ -253,6 +261,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Not pulling hard enough to create real resistance", "Letting the elbow drift forward"],
         alt: "Dumbbell Curl (if you have dumbbells)",
         tip: "Fatigue builds fast with isometrics — a genuine hard 20 seconds is plenty.",
+        videoUrl: "https://www.youtube.com/shorts/XKySx6ADUNQ",
       }),
       ex({
         slug: "bird-dog",
@@ -267,6 +276,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Arching the lower back as the leg lifts", "Rushing through reps without a pause"],
         alt: "Superman",
         tip: "Pause a full second at full extension — that's where the stability work happens.",
+        videoUrl: "https://www.youtube.com/watch?v=ZdAHe9_HeEw",
       }),
     ],
   },
@@ -291,6 +301,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Heels lifting off the floor", "Knees caving inward"],
         alt: "Jump Squat (more advanced)",
         tip: "Once 20 clean reps feels easy, add pauses at the bottom or move to jump squats.",
+        videoUrl: "https://www.youtube.com/watch?v=cB0cOX7gePg",
       }),
       ex({
         slug: "reverse-lunge",
@@ -305,6 +316,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Front knee traveling far past the toes", "Losing balance by stepping too narrow"],
         alt: "Walking Lunge",
         tip: "Stepping backward is easier to balance on than stepping forward — good if lunges feel wobbly.",
+        videoUrl: "https://www.youtube.com/watch?v=sb1GbA4Dp04",
       }),
       ex({
         slug: "single-leg-glute-bridge",
@@ -319,6 +331,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Hips dropping/rotating toward the lifted leg", "Arching the lower back instead of squeezing glutes"],
         alt: "Two-Leg Glute Bridge",
         tip: "If your hips can't stay level, regress to the two-leg version until you build the strength.",
+        videoUrl: "https://www.youtube.com/watch?v=VUl8R0kn6v4",
       }),
       ex({
         slug: "step-up-park-bench",
@@ -333,6 +346,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Pushing off the bottom foot to help", "Using a step too high for your current strength"],
         alt: "Reverse Lunge",
         tip: "A park bench is perfect for this — no equipment needed, just a solid step.",
+        videoUrl: "https://www.youtube.com/watch?v=vOiHvzj5XhA",
       }),
       ex({
         slug: "wall-sit",
@@ -348,6 +362,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Sliding too low or too high on the wall", "Holding your breath"],
         alt: "Bodyweight Squat (paused reps)",
         tip: "This burns — that's quad endurance working, not a sign something's wrong.",
+        videoUrl: "https://www.youtube.com/watch?v=JaZNYM3zAP0",
       }),
       ex({
         slug: "calf-raise",
@@ -362,6 +377,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Bouncing through a partial range", "Rushing the lowering phase"],
         alt: "Single-Leg Calf Raise (harder)",
         tip: "Slow and controlled beats fast and bouncy for calf growth every time.",
+        videoUrl: "https://www.youtube.com/watch?v=EmyjIRHl3CU",
       }),
       ex({
         slug: "russian-twist-bodyweight",
@@ -376,6 +392,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Rounding the back excessively", "Moving too fast to control the rotation"],
         alt: "Bicycle Crunch",
         tip: "Keep feet on the floor if lifting them breaks your form — control matters more than the harder variation.",
+        videoUrl: "https://www.youtube.com/watch?v=IJDOoVyVjhc",
       }),
     ],
   },
@@ -400,6 +417,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Going too wide and straining the shoulders", "Partial reps"],
         alt: "Push-Up",
         tip: "A wider hand position emphasizes the outer chest more than a standard push-up.",
+        videoUrl: "https://www.youtube.com/watch?v=Va6XjAKEoYE",
       }),
       ex({
         slug: "pike-push-up-elevated",
@@ -415,6 +433,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Feet too elevated before you're ready, losing form", "Letting the hips drop"],
         alt: "Pike Push-Up (feet on the floor)",
         tip: "This is one of the hardest bodyweight shoulder movements — build up to it with regular pike push-ups first.",
+        videoUrl: "https://www.youtube.com/watch?v=8URA3YSur2M",
       }),
       ex({
         slug: "tricep-dip-bench",
@@ -429,6 +448,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Shoulders shrugging up toward the ears", "Going too deep and straining the shoulder joint"],
         alt: "Diamond Push-Up",
         tip: "Bend your knees and keep feet closer to the bench to make this easier.",
+        videoUrl: "https://www.youtube.com/watch?v=j_WpuVY3wbo",
       }),
       ex({
         slug: "plank-walkout",
@@ -443,6 +463,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Letting the hips sag on the way out", "Bending the knees to cheat the walkout"],
         alt: "Push-Up",
         tip: "Great full-body warm-up-to-work movement that also stretches your hamstrings.",
+        videoUrl: "https://www.youtube.com/watch?v=iqVpjKAUETY",
       }),
       ex({
         slug: "archer-push-up",
@@ -458,6 +479,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Not shifting weight far enough to load one side properly", "Sagging hips"],
         alt: "Wide Push-Up",
         tip: "This unilaterally loads one arm much harder — great progression toward a one-arm push-up.",
+        videoUrl: "https://www.youtube.com/watch?v=L109Ad4zCR4",
       }),
       ex({
         slug: "incline-push-up",
@@ -472,6 +494,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Hips sagging", "Using a surface so high there's barely any range of motion"],
         alt: "Regular Push-Up",
         tip: "A good finisher after harder push-up variations — the incline makes it easier to grind out extra reps.",
+        videoUrl: "https://www.youtube.com/watch?v=0JUrOH--Kdk",
       }),
       reuseGymPlank(),
     ],
@@ -498,6 +521,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Using furniture that isn't sturdy enough — test it with weight first", "Sagging hips"],
         alt: "Doorframe Isometric Row",
         tip: "If you have park access, a low horizontal bar works even better than a table.",
+        videoUrl: "https://www.youtube.com/watch?v=Fl0UMfdEzsE",
       }),
       ex({
         slug: "prone-t-raise",
@@ -512,6 +536,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Shrugging the shoulders up instead of squeezing the blades", "Lifting the neck instead of the chest"],
         alt: "Prone Y-Raise",
         tip: "The T angle emphasizes the rear delts and mid-traps slightly differently than the Y version.",
+        videoUrl: "https://www.youtube.com/watch?v=3GJoiYUYwr0",
       }),
       ex({
         slug: "doorframe-isometric-row",
@@ -527,6 +552,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Locking the elbow straight (no tension)", "Leaning with a rounded back"],
         alt: "Table Inverted Row",
         tip: "This is an isometric hold — pull hard enough that you genuinely feel the back working.",
+        videoUrl: "https://www.youtube.com/watch?v=lfPrQ8jahkM",
       }),
       ex({
         slug: "superman",
@@ -541,6 +567,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Yanking upward instead of a controlled lift", "Holding your breath"],
         alt: "Bird Dog",
         tip: "Same cue as Pull A — quality over height on the lift.",
+        videoUrl: "https://www.youtube.com/watch?v=cZxtPxeR2H8",
       }),
       ex({
         slug: "towel-hammer-curl-isometric",
@@ -556,6 +583,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Not creating enough resistance through the foot", "Letting the elbow drift forward"],
         alt: "Towel Isometric Curl",
         tip: "The neutral grip shifts more emphasis onto the forearms and brachialis than a regular curl grip.",
+        videoUrl: "https://www.youtube.com/shorts/XKySx6ADUNQ",
       }),
       ex({
         slug: "bird-dog",
@@ -570,6 +598,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Arching the lower back as the leg lifts", "Rushing through reps without a pause"],
         alt: "Superman",
         tip: "Pause a full second at full extension — that's where the stability work happens.",
+        videoUrl: "https://www.youtube.com/watch?v=ZdAHe9_HeEw",
       }),
       ex({
         slug: "side-plank",
@@ -585,6 +614,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Hips dropping over the course of the hold", "Rotating forward or backward"],
         alt: "Plank",
         tip: "If your hips sag before the target time, that's your real hold time — build up from there.",
+        videoUrl: "https://www.youtube.com/watch?v=iNbH7_edNI8",
       }),
     ],
   },
@@ -610,6 +640,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Landing stiff-legged instead of absorbing with a soft knee bend", "Letting the knees cave in on landing"],
         alt: "Bodyweight Squat",
         tip: "Focus on a soft, quiet landing — that's the sign you're absorbing force correctly.",
+        videoUrl: "https://www.youtube.com/watch?v=tZSYZdtbONc",
       }),
       ex({
         slug: "curtsy-lunge",
@@ -624,6 +655,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Rotating the hips instead of keeping them square", "Losing balance by stepping too far"],
         alt: "Reverse Lunge",
         tip: "The diagonal step angle hits the glute medius (side of the hip) more than a straight lunge.",
+        videoUrl: "https://www.youtube.com/watch?v=yv0gSJLFhJE",
       }),
       ex({
         slug: "single-leg-romanian-deadlift-bodyweight",
@@ -653,6 +685,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Hips dropping when a leg lifts", "Rushing the leg switch"],
         alt: "Single-Leg Glute Bridge",
         tip: "Keeping the hips level throughout is harder — and more valuable — than the leg lift itself.",
+        videoUrl: "https://www.youtube.com/watch?v=MJwQ94J8_pE",
       }),
       ex({
         slug: "single-leg-calf-raise",
@@ -667,6 +700,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Using the wall to push instead of just balance", "Bouncing through partial reps"],
         alt: "Calf Raise (both feet)",
         tip: "Single-leg work exposes and fixes side-to-side calf imbalances.",
+        videoUrl: "https://www.youtube.com/watch?v=td7TMmbV8wI",
       }),
       ex({
         slug: "sumo-squat-pulse",
@@ -681,6 +715,7 @@ export const BODYWEIGHT_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Standing up between pulses", "Letting the knees drift inward"],
         alt: "Bodyweight Squat",
         tip: "This is a burnout finisher — expect it to burn, that's the point.",
+        videoUrl: "https://www.youtube.com/watch?v=QnZAF0lsS2o",
       }),
       ex({
         slug: "plank-leg-lift",

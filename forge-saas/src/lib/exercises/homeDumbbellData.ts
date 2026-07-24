@@ -91,6 +91,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Bouncing elbows off the floor", "Flaring elbows to 90°"],
         alt: "Push-Up",
         tip: "No bench needed — the floor limits your range so it's shoulder-friendly too.",
+        videoUrl: "https://www.youtube.com/watch?v=AqYFvc9t_vU",
       }),
       ex({
         slug: "standing-dumbbell-shoulder-press",
@@ -105,6 +106,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Arching the lower back to press", "Using leg drive to cheat the weight up"],
         alt: "Seated Dumbbell Shoulder Press",
         tip: "Standing recruits your core as a stabilizer — keep glutes and abs tight throughout.",
+        videoUrl: "https://www.youtube.com/watch?v=OM23fjJB3-0",
       }),
       reuseGym("dumbbell-lateral-raise"),
       ex({
@@ -120,6 +122,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Hips sagging or piking up", "Only doing a half range of motion"],
         alt: "Incline Push-Up (hands on a chair) if too hard, Decline Push-Up if too easy",
         tip: "If 10 clean reps is too easy, elevate your feet on a chair for more chest/shoulder load.",
+        videoUrl: "https://www.youtube.com/watch?v=IODxDxX7oi4",
       }),
       ex({
         slug: "dumbbell-floor-fly",
@@ -160,6 +163,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Rounding the lower back", "Using momentum/jerking the weight up"],
         alt: "Single-Arm Dumbbell Row",
         tip: "Keep your neck neutral — look at the floor a few feet ahead, not straight down.",
+        videoUrl: "https://www.youtube.com/watch?v=fFmwY2dA2ds",
       }),
       reuseGym("single-arm-dumbbell-row"),
       ex({
@@ -175,6 +179,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Letting the hips rotate/twist toward the lifting side", "Rushing the tempo"],
         alt: "Single-Arm Dumbbell Row",
         tip: "Widen your stance if you feel unstable — stability comes before load here.",
+        videoUrl: "https://www.youtube.com/watch?v=te1rv8hxg-k",
       }),
       reuseGym("machine-dumbbell-rear-delt-fly"),
       reuseGym("hammer-curl"),
@@ -192,6 +197,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Swinging the legs instead of curling the hips", "Using the arms to push off the floor"],
         alt: "Hanging Knee Raise (if you have a pull-up bar)",
         tip: "Small, controlled range beats a big swinging rep every time.",
+        videoUrl: "https://www.youtube.com/watch?v=yH-oSzE5_g0",
       }),
     ],
   },
@@ -216,6 +222,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Heels lifting off the floor", "Knees caving inward"],
         alt: "Barbell Back Squat",
         tip: "Elbows brushing the inside of your knees at the bottom is a good depth check.",
+        videoUrl: "https://www.youtube.com/watch?v=gm4ln6PO4rc",
       }),
       ex({
         slug: "dumbbell-romanian-deadlift",
@@ -230,6 +237,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Rounding the lower back", "Squatting the movement instead of hinging"],
         alt: "Barbell Romanian Deadlift",
         tip: "This is a hip-hinge, not a squat — your knees barely bend.",
+        videoUrl: "https://www.youtube.com/watch?v=V8Hdl1FiNt4",
       }),
       reuseGym("dumbbell-walking-lunge"),
       reuseGym("dumbbell-step-up"),
@@ -260,6 +268,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Bouncing through a partial range", "Rushing the eccentric (lowering) phase"],
         alt: "Standing/Seated Calf Raise Machine",
         tip: "Calves respond well to slow tempo and full stretch — don't rush this one.",
+        videoUrl: "https://www.youtube.com/watch?v=wxwY7GXxL4k",
       }),
       ex({
         slug: "dumbbell-russian-twist",
@@ -301,6 +310,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Flaring elbows out wide", "Sagging hips"],
         alt: "Regular Push-Up",
         tip: "Drop to your knees to keep good form if the full version breaks down before your target reps.",
+        videoUrl: "https://www.youtube.com/watch?v=l02EZAm-qn0",
       }),
       ex({
         slug: "wide-push-up",
@@ -315,6 +325,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Going too wide and straining the shoulders", "Partial reps"],
         alt: "Cable Crossover",
         tip: "A wider hand position emphasizes the outer chest more than a standard push-up.",
+        videoUrl: "https://www.youtube.com/watch?v=Va6XjAKEoYE",
       }),
       ex({
         slug: "dumbbell-front-raise",
@@ -329,6 +340,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Using momentum/body swing to lift", "Raising past shoulder height and shrugging"],
         alt: "Cable Front Raise",
         tip: "Go lighter than you expect — front delts fatigue quickly on isolation work.",
+        videoUrl: "https://www.youtube.com/watch?v=BYnam1bnp18",
       }),
       reuseGym("skull-crusher"),
       reuseGym("plank"),
@@ -370,6 +382,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Standing too upright and turning it into a shrug", "Using momentum to swing the weight up"],
         alt: "Cable Face Pull",
         tip: "Lead with your elbows, not your hands, to keep tension on the rear delts.",
+        videoUrl: "https://www.youtube.com/watch?v=d1QEddtoOq0",
       }),
       ex({
         slug: "dumbbell-zottman-curl",
@@ -398,6 +411,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Swinging the shoulder forward", "Curling too fast to feel the squeeze"],
         alt: "Hammer Curl",
         tip: "The angled path hits the brachialis slightly differently than a straight hammer curl.",
+        videoUrl: "https://www.youtube.com/watch?v=0jLf1MYSp3c",
       }),
       ex({
         slug: "superman",
@@ -412,6 +426,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Yanking upward instead of a controlled lift", "Holding your breath"],
         alt: "Bird Dog",
         tip: "This is a small range of motion — a controlled few inches beats a big, jerky lift.",
+        videoUrl: "https://www.youtube.com/watch?v=cZxtPxeR2H8",
       }),
       ex({
         slug: "bicycle-crunch",
@@ -426,6 +441,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Pulling on the neck with your hands", "Going too fast and losing the twist"],
         alt: "Bicycle Crunch",
         tip: "Slow this one down — speed usually means you're using momentum, not your abs.",
+        videoUrl: "https://www.youtube.com/watch?v=wpRI3xBhJmo",
       }),
     ],
   },
@@ -450,6 +466,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Knees caving inward", "Leaning too far forward"],
         alt: "Dumbbell Goblet Squat",
         tip: "The wider stance shifts more emphasis onto glutes and inner thighs.",
+        videoUrl: "https://www.youtube.com/watch?v=Sq88Uw0roVU",
       }),
       ex({
         slug: "dumbbell-hip-thrust",
@@ -493,6 +510,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Arching the lower back instead of squeezing glutes", "Feet placed too far from the hips"],
         alt: "Dumbbell Hip Thrust",
         tip: "Heels should be close enough to your glutes that your shins are close to vertical at the top.",
+        videoUrl: "https://www.youtube.com/watch?v=E6VLOEz7tWE",
       }),
       ex({
         slug: "sumo-squat-pulse",
@@ -507,6 +525,7 @@ export const HOME_DUMBBELL_DAY_TEMPLATES: DayTemplate[] = [
         mistakes: ["Standing up between pulses", "Letting the knees drift inward"],
         alt: "Dumbbell Sumo Squat",
         tip: "This is a burnout finisher — expect it to burn, that's the point.",
+        videoUrl: "https://www.youtube.com/watch?v=QnZAF0lsS2o",
       }),
       ex({
         slug: "plank-leg-lift",
