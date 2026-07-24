@@ -338,3 +338,33 @@ create index if not exists push_subscriptions_user_idx on public.push_subscripti
 alter table public.profiles add column if not exists day_offset int not null default 0 check (day_offset between 0 and 5);
 alter table public.profiles add column if not exists training_location text not null default 'gym' check (training_location in ('gym', 'home'));
 alter table public.profiles add column if not exists has_dumbbells_at_home boolean not null default true;
+
+-- 13. DAILY INTAKE ------------------------------------------------------------
+-- Actual logged water/protein intake per day, tracked against the computed
+-- targets shown on the dashboard (which were target-only before this).
+
+create table if not exists public.daily_intake (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references public.profiles (id) on delete cascade,
+  log_date date not null,
+  water_ml int not null default 0,
+  protein_g int not null default 0,
+  updated_at timestamptz not null default now(),
+  unique (user_id, log_date)
+);
+
+alter table public.daily_intake enable row level security;
+
+drop policy if exists "daily_intake: select own" on public.daily_intake;
+create policy "daily_intake: select own" on public.daily_intake
+  for select using (auth.uid() = user_id);
+
+drop policy if exists "daily_intake: insert own" on public.daily_intake;
+create policy "daily_intake: insert own" on public.daily_intake
+  for insert with check (auth.uid() = user_id);
+
+drop policy if exists "daily_intake: update own" on public.daily_intake;
+create policy "daily_intake: update own" on public.daily_intake
+  for update using (auth.uid() = user_id);
+
+create index if not exists daily_intake_user_date_idx on public.daily_intake (user_id, log_date);

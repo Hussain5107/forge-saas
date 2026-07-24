@@ -9,7 +9,7 @@ import type { LoggedSet } from "@/lib/exercises/loggingTypes";
 import ExerciseCard from "./ExerciseCard";
 import NutritionPanel from "./NutritionPanel";
 import { Button } from "./ui";
-import { toggleExerciseDone, saveExerciseNote, logSet } from "@/app/dashboard/actions";
+import { toggleExerciseDone, saveExerciseNote, logSet, logIntake } from "@/app/dashboard/actions";
 import { Logo } from "./Logo";
 import ReviewPrompt from "./ReviewPrompt";
 import InstallAppPrompt from "./InstallAppPrompt";
@@ -45,6 +45,8 @@ interface Props {
   dateOfBirth: string | null;
   avatarUrl: string | null;
   dayOffset: number;
+  waterMl: number;
+  proteinG: number;
 }
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -62,6 +64,8 @@ export default function DashboardClient({
   dateOfBirth,
   avatarUrl,
   dayOffset,
+  waterMl,
+  proteinG,
 }: Props) {
   const today = new Date();
   const [selectedIndex, setSelectedIndex] = useState(today.getDay());
@@ -150,10 +154,18 @@ export default function DashboardClient({
     return { isNewPR: result.isNewPR };
   }
 
+  async function handleLogIntake(waterMlDelta: number, proteinGDelta: number) {
+    const todayIso = weekDates[today.getDay()];
+    const result = await logIntake(todayIso, waterMlDelta, proteinGDelta);
+    return { error: result.error };
+  }
+
   return (
     <main className="mx-auto w-full max-w-5xl px-4 pb-24 pt-6 sm:px-6">
       <header className="mb-6 flex items-center justify-between">
-        <Logo />
+        <Link href="/dashboard">
+          <Logo />
+        </Link>
         <div className="flex flex-wrap items-center justify-end gap-2 text-xs text-[var(--text-faint)] sm:gap-4">
           {liveStreak.current > 0 && (
             <span className="flex items-center gap-1 font-bold text-[var(--amber)]">
@@ -213,7 +225,12 @@ export default function DashboardClient({
         </div>
       )}
 
-      <NutritionPanel nutrition={program.nutrition} />
+      <NutritionPanel
+        nutrition={program.nutrition}
+        waterMl={waterMl}
+        proteinG={proteinG}
+        onLogIntake={handleLogIntake}
+      />
 
       <div className="mt-6 grid grid-cols-7 gap-2">
         {DAY_LABELS.map((label, i) => {

@@ -163,6 +163,44 @@ export async function getStreak(): Promise<StreakState> {
   };
 }
 
+export interface IntakeResult {
+  waterMl: number;
+  proteinG: number;
+  error: string | null;
+}
+
+export async function logIntake(
+  logDate: string,
+  waterMlDelta: number,
+  proteinGDelta: number,
+): Promise<IntakeResult> {
+  const { supabase, userId } = await requireUser();
+
+  const { data: existing, error: fetchError } = await supabase
+    .from("daily_intake")
+    .select("water_ml, protein_g")
+    .eq("user_id", userId)
+    .eq("log_date", logDate)
+    .maybeSingle();
+
+  if (fetchError) return { waterMl: 0, proteinG: 0, error: fetchError.message };
+
+  const waterMl = Math.max(0, (existing?.water_ml ?? 0) + waterMlDelta);
+  const proteinG = Math.max(0, (existing?.protein_g ?? 0) + proteinGDelta);
+
+  const { error } = await supabase
+    .from("daily_intake")
+    .upsert(
+      { user_id: userId, log_date: logDate, water_ml: waterMl, protein_g: proteinG, updated_at: new Date().toISOString() },
+      { onConflict: "user_id,log_date" },
+    );
+
+  if (error) return { waterMl: 0, proteinG: 0, error: error.message };
+
+  revalidatePath("/dashboard");
+  return { waterMl, proteinG, error: null };
+}
+
 export async function submitReview(rating: number, comment: string): Promise<{ error: string | null }> {
   const { supabase, userId } = await requireUser();
   const { error } = await supabase.from("reviews").insert({

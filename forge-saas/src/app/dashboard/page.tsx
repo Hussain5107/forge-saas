@@ -86,6 +86,14 @@ export default async function DashboardPage() {
     .eq("user_id", user.id)
     .maybeSingle();
 
+  const todayIso = weekDates[today.getDay()];
+  const { data: intakeRow } = await supabase
+    .from("daily_intake")
+    .select("water_ml, protein_g")
+    .eq("user_id", user.id)
+    .eq("log_date", todayIso)
+    .maybeSingle();
+
   return (
     <DashboardClient
       email={user.email ?? ""}
@@ -104,6 +112,8 @@ export default async function DashboardPage() {
       dateOfBirth={profile.date_of_birth}
       avatarUrl={profile.avatar_url}
       dayOffset={profile.day_offset ?? 0}
+      waterMl={intakeRow?.water_ml ?? 0}
+      proteinG={intakeRow?.protein_g ?? 0}
     />
   );
 }
