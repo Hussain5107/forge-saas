@@ -14,6 +14,7 @@ import { Logo } from "./Logo";
 import ReviewPrompt from "./ReviewPrompt";
 import InstallAppPrompt from "./InstallAppPrompt";
 import { isBirthdayToday } from "@/lib/dates";
+import { weekdayToDayNumber } from "@/lib/dayRotation";
 
 interface ProgressRow {
   log_date: string;
@@ -43,6 +44,7 @@ interface Props {
   alreadyReviewed: boolean;
   dateOfBirth: string | null;
   avatarUrl: string | null;
+  dayOffset: number;
 }
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -59,9 +61,11 @@ export default function DashboardClient({
   alreadyReviewed,
   dateOfBirth,
   avatarUrl,
+  dayOffset,
 }: Props) {
   const today = new Date();
   const [selectedIndex, setSelectedIndex] = useState(today.getDay());
+  const selectedDayNumber = weekdayToDayNumber(selectedIndex, dayOffset);
   const [muscleFilter, setMuscleFilter] = useState<string>("all");
   const [search, setSearch] = useState("");
 
@@ -97,7 +101,7 @@ export default function DashboardClient({
   }
 
   const selectedDate = weekDates[selectedIndex];
-  const day = program.days.find((d) => d.dayNumber === selectedIndex);
+  const day = program.days.find((d) => d.dayNumber === selectedDayNumber);
 
   const musclesToday = useMemo(
     () => (day ? [...new Set(day.exercises.flatMap((e) => e.primary))] : []),
@@ -120,13 +124,13 @@ export default function DashboardClient({
     const key = `${selectedDate}__${slug}`;
     const wasDone = progress[key]?.done ?? false;
     setProgress((p) => ({ ...p, [key]: { done: !wasDone, note: p[key]?.note ?? "" } }));
-    void toggleExerciseDone(selectedDate, selectedIndex, slug, !wasDone);
+    void toggleExerciseDone(selectedDate, selectedDayNumber ?? 0, slug, !wasDone);
   }
 
   function handleSaveNote(slug: string, note: string) {
     const key = `${selectedDate}__${slug}`;
     setProgress((p) => ({ ...p, [key]: { done: p[key]?.done ?? false, note } }));
-    void saveExerciseNote(selectedDate, selectedIndex, slug, note);
+    void saveExerciseNote(selectedDate, selectedDayNumber ?? 0, slug, note);
   }
 
   async function handleLogSet(exerciseName: string, slug: string, setNumber: number, weightKg: number, reps: number) {
@@ -137,7 +141,7 @@ export default function DashboardClient({
     });
     setPreviousBest((prev) => ({ ...prev, [slug]: { setNumber, weightKg, reps } }));
 
-    const result = await logSet(selectedDate, selectedIndex, slug, exerciseName, setNumber, weightKg, reps, null);
+    const result = await logSet(selectedDate, selectedDayNumber ?? 0, slug, exerciseName, setNumber, weightKg, reps, null);
     setLiveStreak((prev) => ({
       current: result.streak.current,
       longest: Math.max(result.streak.longest, prev.longest),
@@ -213,7 +217,7 @@ export default function DashboardClient({
 
       <div className="mt-6 grid grid-cols-7 gap-2">
         {DAY_LABELS.map((label, i) => {
-          const d = program.days.find((d) => d.dayNumber === i);
+          const d = program.days.find((d) => d.dayNumber === weekdayToDayNumber(i, dayOffset));
           const isSelected = i === selectedIndex;
           return (
             <button

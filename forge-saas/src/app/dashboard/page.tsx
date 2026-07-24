@@ -103,6 +103,7 @@ export default async function DashboardPage() {
       alreadyReviewed={!!reviewRow}
       dateOfBirth={profile.date_of_birth}
       avatarUrl={profile.avatar_url}
+      dayOffset={profile.day_offset ?? 0}
     />
   );
 }

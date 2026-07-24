@@ -324,3 +324,17 @@ create policy "push_subscriptions: delete own" on public.push_subscriptions
   for delete using (auth.uid() = user_id);
 
 create index if not exists push_subscriptions_user_idx on public.push_subscriptions (user_id);
+
+-- 12. WORKOUT DAY ROTATION + TRAINING LOCATION ------------------------------
+-- day_offset shifts which PPL day (Push A/Pull A/Legs A/Push B/Pull B/Legs B)
+-- falls on which weekday, so colleagues sharing the app don't all get leg day
+-- on the same Tuesday. Defaults to 0 (today's fixed Mon-Sat mapping) so
+-- existing users are unaffected; set once at onboarding for new users.
+--
+-- training_location / has_dumbbells_at_home drive which exercise program is
+-- generated: gym (full equipment), home with dumbbells, or fully bodyweight
+-- (home without dumbbells, or training in a park).
+
+alter table public.profiles add column if not exists day_offset int not null default 0 check (day_offset between 0 and 5);
+alter table public.profiles add column if not exists training_location text not null default 'gym' check (training_location in ('gym', 'home'));
+alter table public.profiles add column if not exists has_dumbbells_at_home boolean not null default true;

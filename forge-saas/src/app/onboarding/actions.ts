@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { generateProgram } from "@/lib/exercises/generator";
 import type { ExperienceLevel, Goal, Sex } from "@/lib/exercises/types";
+import { deriveDayOffset } from "@/lib/dayRotation";
 
 export interface OnboardingState {
   error?: string;
@@ -51,6 +52,7 @@ export async function submitOnboarding(
       weight_kg: weightKg,
       goal,
       experience,
+      day_offset: deriveDayOffset(user.id),
       onboarded: true,
     })
     .eq("id", user.id);
