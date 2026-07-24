@@ -1,5 +1,8 @@
 import { DAY_TEMPLATES } from "./data";
+import { HOME_DUMBBELL_DAY_TEMPLATES } from "./homeDumbbellData";
+import { BODYWEIGHT_DAY_TEMPLATES } from "./bodyweightData";
 import type {
+  DayTemplate,
   ExerciseTemplate,
   GeneratedProgram,
   NutritionTargets,
@@ -7,6 +10,13 @@ import type {
   PrescribedExercise,
   UserProfile,
 } from "./types";
+
+function templatesFor(profile: UserProfile): DayTemplate[] {
+  if (profile.trainingLocation === "home") {
+    return profile.hasDumbbellsAtHome ? HOME_DUMBBELL_DAY_TEMPLATES : BODYWEIGHT_DAY_TEMPLATES;
+  }
+  return DAY_TEMPLATES;
+}
 
 /**
  * Personalization strategy: exercise SELECTION stays the same proven 6-day
@@ -97,7 +107,7 @@ function prescribeExercise(
 }
 
 function prescribeDay(profile: UserProfile, dayNumber: number): PrescribedDay {
-  const template = DAY_TEMPLATES.find((d) => d.dayNumber === dayNumber);
+  const template = templatesFor(profile).find((d) => d.dayNumber === dayNumber);
   if (!template) {
     return {
       key: "rest",

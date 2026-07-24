@@ -4,7 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
-import { updateProfile, updateAvatarUrl, logHealthMetric, savePushSubscription } from "@/app/dashboard/settings/actions";
+import {
+  updateProfile,
+  updateAvatarUrl,
+  logHealthMetric,
+  savePushSubscription,
+  updateTrainingLocation,
+} from "@/app/dashboard/settings/actions";
+import type { TrainingLocation } from "@/lib/exercises/types";
 import { subscribeToPush, supportsPush } from "@/lib/pushClient";
 import { Button, Card, Checkbox, Input, Label } from "./ui";
 import { Logo } from "./Logo";
@@ -23,6 +30,8 @@ interface Profile {
   water_reminder_hour: number;
   workout_reminder_enabled: boolean;
   workout_reminder_hour: number;
+  training_location: TrainingLocation;
+  has_dumbbells_at_home: boolean;
 }
 
 interface HealthMetric {
@@ -73,6 +82,31 @@ export default function SettingsClient({
   const [pushNotice, setPushNotice] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [metricError, setMetricError] = useState<string | null>(null);
+
+  const [trainingLocation, setTrainingLocation] = useState<TrainingLocation>(profile.training_location);
+  const [hasDumbbellsAtHome, setHasDumbbellsAtHome] = useState(profile.has_dumbbells_at_home);
+  const [confirmingLocationChange, setConfirmingLocationChange] = useState(false);
+  const [locationSaving, setLocationSaving] = useState(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
+  const [locationSaved, setLocationSaved] = useState(false);
+
+  const locationChanged =
+    trainingLocation !== profile.training_location ||
+    (trainingLocation === "home" && hasDumbbellsAtHome !== profile.has_dumbbells_at_home);
+
+  async function handleConfirmLocationChange() {
+    setLocationSaving(true);
+    setLocationError(null);
+    const result = await updateTrainingLocation(trainingLocation, trainingLocation === "gym" ? true : hasDumbbellsAtHome);
+    setLocationSaving(false);
+    setConfirmingLocationChange(false);
+    if (result.error) {
+      setLocationError(result.error);
+    } else {
+      setLocationSaved(true);
+      setTimeout(() => setLocationSaved(false), 2500);
+    }
+  }
 
   async function ensurePushSubscribed() {
     if (!supportsPush()) {
@@ -224,6 +258,92 @@ export default function SettingsClient({
       </Card>
 
       <Card className="mt-6 p-6">
+        <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-[var(--text-faint)]">Training Location</h2>
+        <div className="grid grid-cols-2 gap-3">
+          <LocationButton
+            label="🏋️ Gym"
+            active={trainingLocation === "gym"}
+            onClick={() => {
+              setTrainingLocation("gym");
+              setConfirmingLocationChange(false);
+            }}
+          />
+          <LocationButton
+            label="🏠 Home"
+            active={trainingLocation === "home"}
+            onClick={() => {
+              setTrainingLocation("home");
+              setConfirmingLocationChange(false);
+            }}
+          />
+        </div>
+
+        {trainingLocation === "home" && (
+          <div className="mt-4">
+            <Label>Do you have dumbbells at home?</Label>
+            <div className="grid grid-cols-2 gap-3">
+              <LocationButton
+                label="Yes"
+                active={hasDumbbellsAtHome}
+                onClick={() => {
+                  setHasDumbbellsAtHome(true);
+                  setConfirmingLocationChange(false);
+                }}
+              />
+              <LocationButton
+                label="No"
+                active={!hasDumbbellsAtHome}
+                onClick={() => {
+                  setHasDumbbellsAtHome(false);
+                  setConfirmingLocationChange(false);
+                }}
+              />
+            </div>
+            <p className="mt-1.5 text-xs text-[var(--text-faint)]">
+              No dumbbells is perfect for a park or bodyweight-only session too.
+            </p>
+          </div>
+        )}
+
+        {locationChanged && !confirmingLocationChange && (
+          <Button
+            variant="primary"
+            onClick={() => setConfirmingLocationChange(true)}
+            className="mt-4 w-full"
+          >
+            Save training location
+          </Button>
+        )}
+
+        {confirmingLocationChange && (
+          <div className="mt-4 rounded-xl border border-[var(--amber)]/40 bg-[var(--amber)]/10 p-4">
+            <p className="text-sm font-bold text-[var(--amber)]">⚠️ This regenerates your whole plan</p>
+            <p className="mt-1 text-sm text-[var(--text-dim)]">
+              Switching training location rebuilds every day of your program to match the new
+              equipment. Your logged sets, PRs, and streak are kept — only the exercise list
+              changes.
+            </p>
+            <div className="mt-3 flex gap-2">
+              <Button
+                variant="primary"
+                onClick={handleConfirmLocationChange}
+                disabled={locationSaving}
+                className="flex-1"
+              >
+                {locationSaving ? "Regenerating…" : "Yes, regenerate my plan"}
+              </Button>
+              <Button onClick={() => setConfirmingLocationChange(false)} disabled={locationSaving} className="flex-1">
+                Cancel
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {locationSaved && <p className="mt-3 text-sm text-[var(--volt)]">Plan regenerated ✓</p>}
+        {locationError && <p className="mt-3 text-sm text-[var(--rose)]">Couldn&apos;t update: {locationError}</p>}
+      </Card>
+
+      <Card className="mt-6 p-6">
         <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-[var(--text-faint)]">Health info (optional)</h2>
         <div className="flex flex-col gap-3">
           <Checkbox label="I have diabetes" checked={hasDiabetes} onChange={(e) => setHasDiabetes(e.target.checked)} />
@@ -353,5 +473,21 @@ export default function SettingsClient({
         )}
       </Card>
     </main>
+  );
+}
+
+function LocationButton({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-xl border px-4 py-3 text-sm font-semibold transition ${
+        active
+          ? "border-transparent bg-gradient-to-br from-[var(--violet)] to-[var(--cyan)] text-white"
+          : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-dim)] hover:border-[var(--border-hi)]"
+      }`}
+    >
+      {label}
+    </button>
   );
 }

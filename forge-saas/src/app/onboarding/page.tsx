@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { submitOnboarding, type OnboardingState } from "./actions";
 import { Button, Card, ErrorText, Input, Label, Select } from "@/components/ui";
 import { Logo } from "@/components/Logo";
@@ -9,6 +9,8 @@ const initialState: OnboardingState = {};
 
 export default function OnboardingPage() {
   const [state, formAction, pending] = useActionState(submitOnboarding, initialState);
+  const [trainingLocation, setTrainingLocation] = useState<"gym" | "home">("gym");
+  const [hasDumbbells, setHasDumbbells] = useState<"yes" | "no">("yes");
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-lg flex-col justify-center px-6 py-12">
@@ -77,6 +79,40 @@ export default function OnboardingPage() {
             </Select>
           </div>
 
+          <div>
+            <Label>Where will you train?</Label>
+            <input type="hidden" name="trainingLocation" value={trainingLocation} />
+            <div className="grid grid-cols-2 gap-3">
+              <LocationOption
+                label="🏋️ Gym"
+                active={trainingLocation === "gym"}
+                onClick={() => setTrainingLocation("gym")}
+              />
+              <LocationOption
+                label="🏠 Home"
+                active={trainingLocation === "home"}
+                onClick={() => setTrainingLocation("home")}
+              />
+            </div>
+            <p className="mt-1.5 text-xs text-[var(--text-faint)]">
+              You can change this any time from Settings.
+            </p>
+          </div>
+
+          {trainingLocation === "home" && (
+            <div>
+              <Label>Do you have dumbbells at home?</Label>
+              <input type="hidden" name="hasDumbbells" value={hasDumbbells} />
+              <div className="grid grid-cols-2 gap-3">
+                <LocationOption label="Yes" active={hasDumbbells === "yes"} onClick={() => setHasDumbbells("yes")} />
+                <LocationOption label="No" active={hasDumbbells === "no"} onClick={() => setHasDumbbells("no")} />
+              </div>
+              <p className="mt-1.5 text-xs text-[var(--text-faint)]">
+                No dumbbells is perfect for a park or bodyweight-only session too.
+              </p>
+            </div>
+          )}
+
           <ErrorText>{state?.error}</ErrorText>
 
           <Button type="submit" variant="primary" disabled={pending} className="mt-2 w-full">
@@ -90,5 +126,29 @@ export default function OnboardingPage() {
         personalize sets, reps, rest, and nutrition targets on top of it.
       </p>
     </main>
+  );
+}
+
+function LocationOption({
+  label,
+  active,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`rounded-xl border px-4 py-3 text-sm font-semibold transition ${
+        active
+          ? "border-transparent bg-gradient-to-br from-[var(--violet)] to-[var(--cyan)] text-white"
+          : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-dim)] hover:border-[var(--border-hi)]"
+      }`}
+    >
+      {label}
+    </button>
   );
 }

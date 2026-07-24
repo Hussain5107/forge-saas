@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { generateProgram } from "@/lib/exercises/generator";
+import type { TrainingLocation } from "@/lib/exercises/types";
 
 async function requireUser() {
   const supabase = await createClient();
@@ -46,6 +48,49 @@ export async function updateProfile(input: UpdateProfileInput): Promise<{ error:
     .eq("id", userId);
 
   if (error) return { error: error.message };
+
+  revalidatePath("/dashboard/settings");
+  revalidatePath("/dashboard");
+  return { error: null };
+}
+
+export async function updateTrainingLocation(
+  trainingLocation: TrainingLocation,
+  hasDumbbellsAtHome: boolean,
+): Promise<{ error: string | null }> {
+  const { supabase, userId } = await requireUser();
+
+  const { data: profile, error: fetchError } = await supabase
+    .from("profiles")
+    .select("age, sex, height_cm, weight_kg, goal, experience")
+    .eq("id", userId)
+    .single();
+
+  if (fetchError || !profile) return { error: fetchError?.message ?? "Couldn't load your profile." };
+
+  const { error: updateError } = await supabase
+    .from("profiles")
+    .update({ training_location: trainingLocation, has_dumbbells_at_home: hasDumbbellsAtHome })
+    .eq("id", userId);
+
+  if (updateError) return { error: updateError.message };
+
+  const program = generateProgram({
+    age: profile.age,
+    sex: profile.sex,
+    heightCm: profile.height_cm,
+    weightKg: profile.weight_kg,
+    goal: profile.goal,
+    experience: profile.experience,
+    trainingLocation,
+    hasDumbbellsAtHome,
+  });
+
+  const { error: programError } = await supabase
+    .from("programs")
+    .upsert({ user_id: userId, program, created_at: new Date().toISOString() });
+
+  if (programError) return { error: programError.message };
 
   revalidatePath("/dashboard/settings");
   revalidatePath("/dashboard");

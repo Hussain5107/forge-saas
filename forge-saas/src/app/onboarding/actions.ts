@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { generateProgram } from "@/lib/exercises/generator";
-import type { ExperienceLevel, Goal, Sex } from "@/lib/exercises/types";
+import type { ExperienceLevel, Goal, Sex, TrainingLocation } from "@/lib/exercises/types";
 import { deriveDayOffset } from "@/lib/dayRotation";
 
 export interface OnboardingState {
@@ -29,6 +29,8 @@ export async function submitOnboarding(
   const weightKg = Number(formData.get("weightKg"));
   const goal = formData.get("goal") as Goal;
   const experience = formData.get("experience") as ExperienceLevel;
+  const trainingLocation = (formData.get("trainingLocation") as string) || "gym";
+  const hasDumbbells = (formData.get("hasDumbbells") as string) || "yes";
 
   if (
     !age || age < 13 || age > 100 ||
@@ -36,12 +38,23 @@ export async function submitOnboarding(
     !heightCm || heightCm < 100 || heightCm > 250 ||
     !weightKg || weightKg < 30 || weightKg > 300 ||
     !["muscle", "strength", "fat_loss", "general_fitness"].includes(goal) ||
-    !["beginner", "intermediate", "advanced"].includes(experience)
+    !["beginner", "intermediate", "advanced"].includes(experience) ||
+    !["gym", "home"].includes(trainingLocation)
   ) {
     return { error: "Please fill in every field with a valid value." };
   }
 
-  const profile = { age, sex, heightCm, weightKg, goal, experience };
+  const hasDumbbellsAtHome = trainingLocation === "gym" ? true : hasDumbbells === "yes";
+  const profile = {
+    age,
+    sex,
+    heightCm,
+    weightKg,
+    goal,
+    experience,
+    trainingLocation: trainingLocation as TrainingLocation,
+    hasDumbbellsAtHome,
+  };
 
   const { error: profileError } = await supabase
     .from("profiles")
@@ -53,6 +66,8 @@ export async function submitOnboarding(
       goal,
       experience,
       day_offset: deriveDayOffset(user.id),
+      training_location: trainingLocation,
+      has_dumbbells_at_home: hasDumbbellsAtHome,
       onboarded: true,
     })
     .eq("id", user.id);

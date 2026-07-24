@@ -69,6 +69,7 @@ export interface DayTemplate {
 export type Goal = "muscle" | "strength" | "fat_loss" | "general_fitness";
 export type ExperienceLevel = "beginner" | "intermediate" | "advanced";
 export type Sex = "male" | "female";
+export type TrainingLocation = "gym" | "home";
 
 export interface UserProfile {
   age: number;
@@ -77,6 +78,8 @@ export interface UserProfile {
   weightKg: number;
   goal: Goal;
   experience: ExperienceLevel;
+  trainingLocation: TrainingLocation;
+  hasDumbbellsAtHome: boolean;
 }
 
 export interface PrescribedExercise extends ExerciseTemplate {
