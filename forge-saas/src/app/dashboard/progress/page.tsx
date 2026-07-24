@@ -28,6 +28,12 @@ export default async function ProgressPage() {
     .eq("user_id", user.id)
     .maybeSingle();
 
+  const { data: photoRows } = await supabase
+    .from("progress_photos")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("taken_at", { ascending: false });
+
   return (
     <ProgressClient
       sets={allSets ?? []}
@@ -37,6 +43,8 @@ export default async function ProgressPage() {
         longest: streakRow?.longest_streak ?? 0,
         total: streakRow?.total_workouts ?? 0,
       }}
+      userId={user.id}
+      photos={photoRows ?? []}
     />
   );
 }
