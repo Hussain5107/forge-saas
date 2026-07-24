@@ -323,6 +323,10 @@ drop policy if exists "push_subscriptions: delete own" on public.push_subscripti
 create policy "push_subscriptions: delete own" on public.push_subscriptions
   for delete using (auth.uid() = user_id);
 
+drop policy if exists "push_subscriptions: update own" on public.push_subscriptions;
+create policy "push_subscriptions: update own" on public.push_subscriptions
+  for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
 create index if not exists push_subscriptions_user_idx on public.push_subscriptions (user_id);
 
 -- 12. WORKOUT DAY ROTATION + TRAINING LOCATION ------------------------------
