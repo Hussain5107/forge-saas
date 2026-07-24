@@ -71,6 +71,8 @@ export default function SettingsClient({
   const [metrics, setMetrics] = useState(recentMetrics);
   const [loggingMetric, setLoggingMetric] = useState(false);
   const [pushNotice, setPushNotice] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [metricError, setMetricError] = useState<string | null>(null);
 
   async function ensurePushSubscribed() {
     if (!supportsPush()) {
@@ -86,8 +88,8 @@ export default function SettingsClient({
     }
     const json = sub.toJSON();
     if (json.endpoint && json.keys?.p256dh && json.keys?.auth) {
-      await savePushSubscription(json.endpoint, json.keys.p256dh, json.keys.auth);
-      setPushNotice(null);
+      const result = await savePushSubscription(json.endpoint, json.keys.p256dh, json.keys.auth);
+      setPushNotice(result.error ? `Couldn't save notification settings: ${result.error}` : null);
     }
   }
 
@@ -98,17 +100,25 @@ export default function SettingsClient({
     const supabase = createClient();
     const path = `${profile.id}/avatar/${Date.now()}-${file.name}`;
     const { error } = await supabase.storage.from("progress-photos").upload(path, file, { upsert: true });
-    if (!error) {
+    if (error) {
+      setSaveError(`Couldn't upload photo: ${error.message}`);
+    } else {
       const { data } = supabase.storage.from("progress-photos").getPublicUrl(path);
-      setAvatarUrl(data.publicUrl);
-      await updateAvatarUrl(data.publicUrl);
+      const result = await updateAvatarUrl(data.publicUrl);
+      if (result.error) {
+        setSaveError(`Photo uploaded, but saving it to your profile failed: ${result.error}`);
+      } else {
+        setAvatarUrl(data.publicUrl);
+        setSaveError(null);
+      }
     }
     setUploading(false);
   }
 
   async function handleSave() {
     setSaving(true);
-    await updateProfile({
+    setSaveError(null);
+    const result = await updateProfile({
       dateOfBirth: dateOfBirth || null,
       country: country || null,
       phoneNumber: phoneNumber || null,
@@ -121,21 +131,31 @@ export default function SettingsClient({
       workoutReminderHour,
     });
     setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    if (result.error) {
+      setSaveError(result.error);
+    } else {
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    }
   }
 
   async function handleLogMetric() {
     if (!systolic && !diastolic && !pulse) return;
     setLoggingMetric(true);
+    setMetricError(null);
     const logDate = new Date().toISOString().slice(0, 10);
-    await logHealthMetric(
+    const result = await logHealthMetric(
       logDate,
       systolic ? parseInt(systolic, 10) : null,
       diastolic ? parseInt(diastolic, 10) : null,
       pulse ? parseInt(pulse, 10) : null,
       metricNotes,
     );
+    if (result.error) {
+      setMetricError(result.error);
+      setLoggingMetric(false);
+      return;
+    }
     setMetrics((prev) => [
       {
         id: crypto.randomUUID(),
@@ -185,6 +205,7 @@ export default function SettingsClient({
             <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} disabled={uploading} />
           </label>
         </div>
+        {saveError && <p className="mb-4 text-sm text-[var(--rose)]">{saveError}</p>}
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
@@ -282,10 +303,11 @@ export default function SettingsClient({
         {pushNotice && <p className="mt-2 text-xs text-[var(--amber)]">{pushNotice}</p>}
       </Card>
 
-      <div className="mt-6 flex justify-end">
+      <div className="mt-6 flex flex-col items-end gap-2">
         <Button variant="primary" onClick={handleSave} disabled={saving} className="px-6">
           {saving ? "Saving…" : saved ? "Saved ✓" : "Save changes"}
         </Button>
+        {saveError && <p className="text-sm text-[var(--rose)]">Couldn&apos;t save: {saveError}</p>}
       </div>
 
       <Card className="mt-8 p-6">
@@ -311,6 +333,7 @@ export default function SettingsClient({
         >
           {loggingMetric ? "Logging…" : "Log entry"}
         </Button>
+        {metricError && <p className="mt-2 text-sm text-[var(--rose)]">Couldn&apos;t log entry: {metricError}</p>}
 
         {metrics.length > 0 && (
           <div className="mt-5 flex flex-col gap-2">

@@ -81,23 +81,31 @@ export default function ProgressClient({ sets, personalRecords, streak, userId, 
   const [photoDate, setPhotoDate] = useState(new Date().toISOString().slice(0, 10));
   const [photoNote, setPhotoNote] = useState("");
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [photoError, setPhotoError] = useState<string | null>(null);
 
   async function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadingPhoto(true);
+    setPhotoError(null);
     const supabase = createClient();
     const path = `${userId}/progress/${Date.now()}-${file.name}`;
     const { error } = await supabase.storage.from("progress-photos").upload(path, file);
-    if (!error) {
+    if (error) {
+      setPhotoError(error.message);
+    } else {
       const { data } = supabase.storage.from("progress-photos").getPublicUrl(path);
-      await saveProgressPhoto(data.publicUrl, photoDate, photoNote);
-      setPhotos((prev) =>
-        [{ id: crypto.randomUUID(), photo_url: data.publicUrl, taken_at: photoDate, note: photoNote || null }, ...prev].sort(
-          (a, b) => (a.taken_at < b.taken_at ? 1 : -1),
-        ),
-      );
-      setPhotoNote("");
+      const result = await saveProgressPhoto(data.publicUrl, photoDate, photoNote);
+      if (result.error) {
+        setPhotoError(result.error);
+      } else {
+        setPhotos((prev) =>
+          [{ id: crypto.randomUUID(), photo_url: data.publicUrl, taken_at: photoDate, note: photoNote || null }, ...prev].sort(
+            (a, b) => (a.taken_at < b.taken_at ? 1 : -1),
+          ),
+        );
+        setPhotoNote("");
+      }
     }
     setUploadingPhoto(false);
     e.target.value = "";
@@ -105,7 +113,8 @@ export default function ProgressClient({ sets, personalRecords, streak, userId, 
 
   async function handleDeletePhoto(id: string) {
     setPhotos((prev) => prev.filter((p) => p.id !== id));
-    await deleteProgressPhoto(id);
+    const result = await deleteProgressPhoto(id);
+    if (result.error) setPhotoError(result.error);
   }
 
   return (
@@ -212,6 +221,7 @@ export default function ProgressClient({ sets, personalRecords, streak, userId, 
             <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} disabled={uploadingPhoto} />
           </label>
         </div>
+        {photoError && <p className="mt-3 text-sm text-[var(--rose)]">Couldn&apos;t save photo: {photoError}</p>}
 
         {photos.length === 0 ? (
           <p className="mt-5 text-sm text-[var(--text-faint)]">

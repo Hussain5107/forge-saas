@@ -26,10 +26,10 @@ export interface UpdateProfileInput {
   workoutReminderHour: number;
 }
 
-export async function updateProfile(input: UpdateProfileInput) {
+export async function updateProfile(input: UpdateProfileInput): Promise<{ error: string | null }> {
   const { supabase, userId } = await requireUser();
 
-  await supabase
+  const { error } = await supabase
     .from("profiles")
     .update({
       date_of_birth: input.dateOfBirth || null,
@@ -45,28 +45,43 @@ export async function updateProfile(input: UpdateProfileInput) {
     })
     .eq("id", userId);
 
+  if (error) return { error: error.message };
+
   revalidatePath("/dashboard/settings");
   revalidatePath("/dashboard");
+  return { error: null };
 }
 
-export async function updateAvatarUrl(url: string) {
+export async function updateAvatarUrl(url: string): Promise<{ error: string | null }> {
   const { supabase, userId } = await requireUser();
-  await supabase.from("profiles").update({ avatar_url: url }).eq("id", userId);
+  const { error } = await supabase.from("profiles").update({ avatar_url: url }).eq("id", userId);
+  if (error) return { error: error.message };
   revalidatePath("/dashboard/settings");
   revalidatePath("/dashboard");
+  return { error: null };
 }
 
-export async function savePushSubscription(endpoint: string, p256dh: string, authKey: string) {
+export async function savePushSubscription(
+  endpoint: string,
+  p256dh: string,
+  authKey: string,
+): Promise<{ error: string | null }> {
   const { supabase, userId } = await requireUser();
-  await supabase.from("push_subscriptions").upsert(
-    { user_id: userId, endpoint, p256dh, auth_key: authKey },
-    { onConflict: "endpoint" },
-  );
+  const { error } = await supabase
+    .from("push_subscriptions")
+    .upsert({ user_id: userId, endpoint, p256dh, auth_key: authKey }, { onConflict: "endpoint" });
+  return { error: error?.message ?? null };
 }
 
-export async function logHealthMetric(logDate: string, systolic: number | null, diastolic: number | null, pulse: number | null, notes: string) {
+export async function logHealthMetric(
+  logDate: string,
+  systolic: number | null,
+  diastolic: number | null,
+  pulse: number | null,
+  notes: string,
+): Promise<{ error: string | null }> {
   const { supabase, userId } = await requireUser();
-  await supabase.from("health_metrics").insert({
+  const { error } = await supabase.from("health_metrics").insert({
     user_id: userId,
     log_date: logDate,
     systolic,
@@ -74,5 +89,7 @@ export async function logHealthMetric(logDate: string, systolic: number | null, 
     pulse,
     notes: notes.trim() || null,
   });
+  if (error) return { error: error.message };
   revalidatePath("/dashboard/settings");
+  return { error: null };
 }

@@ -13,19 +13,27 @@ async function requireUser() {
   return { supabase, userId: user.id };
 }
 
-export async function saveProgressPhoto(photoUrl: string, takenAt: string, note: string) {
+export async function saveProgressPhoto(
+  photoUrl: string,
+  takenAt: string,
+  note: string,
+): Promise<{ error: string | null }> {
   const { supabase, userId } = await requireUser();
-  await supabase.from("progress_photos").insert({
+  const { error } = await supabase.from("progress_photos").insert({
     user_id: userId,
     photo_url: photoUrl,
     taken_at: takenAt,
     note: note.trim() || null,
   });
+  if (error) return { error: error.message };
   revalidatePath("/dashboard/progress");
+  return { error: null };
 }
 
-export async function deleteProgressPhoto(id: string) {
+export async function deleteProgressPhoto(id: string): Promise<{ error: string | null }> {
   const { supabase, userId } = await requireUser();
-  await supabase.from("progress_photos").delete().eq("id", id).eq("user_id", userId);
+  const { error } = await supabase.from("progress_photos").delete().eq("id", id).eq("user_id", userId);
+  if (error) return { error: error.message };
   revalidatePath("/dashboard/progress");
+  return { error: null };
 }

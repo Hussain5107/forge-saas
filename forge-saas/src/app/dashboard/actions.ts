@@ -163,12 +163,14 @@ export async function getStreak(): Promise<StreakState> {
   };
 }
 
-export async function submitReview(rating: number, comment: string) {
+export async function submitReview(rating: number, comment: string): Promise<{ error: string | null }> {
   const { supabase, userId } = await requireUser();
-  await supabase.from("reviews").insert({
+  const { error } = await supabase.from("reviews").insert({
     user_id: userId,
     rating,
     comment: comment.trim() || null,
   });
+  if (error) return { error: error.message };
   revalidatePath("/dashboard");
+  return { error: null };
 }

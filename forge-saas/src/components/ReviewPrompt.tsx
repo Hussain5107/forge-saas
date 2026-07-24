@@ -28,6 +28,7 @@ export default function ReviewPrompt({
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -49,8 +50,12 @@ export default function ReviewPrompt({
   async function handleSubmit() {
     if (rating === 0) return;
     setSubmitting(true);
-    await submitReview(rating, comment);
+    const result = await submitReview(rating, comment);
     setSubmitting(false);
+    if (result.error) {
+      setError(result.error);
+      return;
+    }
     setSubmitted(true);
     setTimeout(() => setVisible(false), 1800);
   }
@@ -111,6 +116,7 @@ export default function ReviewPrompt({
                 {submitting ? "Sending…" : "Submit"}
               </Button>
             </div>
+            {error && <p className="mt-3 text-sm text-[var(--rose)]">Couldn&apos;t submit: {error}</p>}
           </>
         )}
       </Card>
