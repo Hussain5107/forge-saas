@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type { GeneratedProgram } from "@/lib/exercises/types";
 import { MUSCLE_LABELS } from "@/lib/exercises/types";
 import type { LoggedSet } from "@/lib/exercises/loggingTypes";
@@ -41,6 +42,7 @@ interface Props {
   accountCreatedAt: string;
   alreadyReviewed: boolean;
   dateOfBirth: string | null;
+  avatarUrl: string | null;
 }
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -56,6 +58,7 @@ export default function DashboardClient({
   accountCreatedAt,
   alreadyReviewed,
   dateOfBirth,
+  avatarUrl,
 }: Props) {
   const today = new Date();
   const [selectedIndex, setSelectedIndex] = useState(today.getDay());
@@ -168,8 +171,21 @@ export default function DashboardClient({
           <Link href="/dashboard/progress" className="hover:text-[var(--text)]">
             Progress
           </Link>
-          <Link href="/dashboard/settings" className="hover:text-[var(--text)]">
-            Settings
+          <Link
+            href="/dashboard/settings"
+            className="flex items-center gap-1.5 hover:text-[var(--text)]"
+            title="Settings"
+          >
+            {avatarUrl ? (
+              <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-[var(--border-hi)]">
+                <Image src={avatarUrl} alt="" fill className="object-cover" />
+              </span>
+            ) : (
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[var(--border-hi)] bg-[var(--surface-hi)] text-xs">
+                👤
+              </span>
+            )}
+            <span className="hidden sm:inline">Settings</span>
           </Link>
           <span className="hidden sm:inline">{email}</span>
           <form action="/auth/signout" method="post">

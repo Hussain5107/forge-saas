@@ -102,6 +102,7 @@ export default async function DashboardPage() {
       accountCreatedAt={profile.created_at}
       alreadyReviewed={!!reviewRow}
       dateOfBirth={profile.date_of_birth}
+      avatarUrl={profile.avatar_url}
     />
   );
 }
