@@ -54,3 +54,16 @@ export function ErrorText({ children }: { children?: string | null }) {
   if (!children) return null;
   return <p className="mt-2 text-sm text-[var(--rose)]">{children}</p>;
 }
+
+export function Checkbox({
+  label,
+  className = "",
+  ...props
+}: InputHTMLAttributes<HTMLInputElement> & { label: string }) {
+  return (
+    <label className={`flex cursor-pointer items-center gap-2.5 text-sm text-[var(--text-dim)] ${className}`}>
+      <input type="checkbox" className="h-4 w-4 accent-[var(--violet)]" {...props} />
+      {label}
+    </label>
+  );
+}
