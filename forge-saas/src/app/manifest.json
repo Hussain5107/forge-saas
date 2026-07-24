@@ -3,6 +3,7 @@
   "short_name": "FORGE",
   "description": "Personalized 6-day Push/Pull/Legs program, workout logging, and progress tracking.",
   "start_url": "/dashboard",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0a0b0f",
   "theme_color": "#0a0b0f",
