@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button, Card, ErrorText, Input, Label } from "@/components/ui";
 import { Logo } from "@/components/Logo";
 
 export default function SignupPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -19,7 +21,7 @@ export default function SignupPage() {
     setError(null);
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -27,9 +29,9 @@ export default function SignupPage() {
       },
     });
 
-    setLoading(false);
     if (error) {
       console.error("Signup failed:", error);
+      setLoading(false);
       setError(
         error.message && error.message !== "{}"
           ? error.message
@@ -37,6 +39,17 @@ export default function SignupPage() {
       );
       return;
     }
+
+    // With email confirmations off, signUp signs the user in immediately
+    // (a session comes back right away) — skip the "check your email" step
+    // and go straight to onboarding. With confirmations on, no session is
+    // returned yet, so fall back to telling them to check their inbox.
+    if (data.session) {
+      router.push("/onboarding");
+      return;
+    }
+
+    setLoading(false);
     setSent(true);
   }
 
