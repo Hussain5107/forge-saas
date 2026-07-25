@@ -29,7 +29,12 @@ export default function SignupPage() {
 
     setLoading(false);
     if (error) {
-      setError(error.message);
+      console.error("Signup failed:", error);
+      setError(
+        error.message && error.message !== "{}"
+          ? error.message
+          : "Something went wrong creating your account. Please wait a few minutes and try again.",
+      );
       return;
     }
     setSent(true);
