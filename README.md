@@ -1,101 +1,64 @@
-# Gym Reminder
+# FORGE
 
-A standalone, always-on 6am gym reminder that pushes a real phone notification
-every day with that day's Push/Pull/Legs workout. Runs entirely on GitHub
-Actions (free, no server/laptop required) and delivers via
-[ntfy.sh](https://ntfy.sh) (free, no account needed).
+A personalized strength-training web app. Answer a short intake quiz and get a
+real 6-day Push/Pull/Legs program built around your goal, experience level and —
+crucially — wherever you actually train: a gym, home with dumbbells, or nothing
+but your own bodyweight (home or a park).
 
-This is independent of Claude Cowork's scheduled tasks feature — it does not
-depend on any of your devices being awake or online.
+Built with Next.js 16 (App Router) and Supabase, deployed on Vercel. Installs to
+a phone home screen as a PWA.
 
-## How it works
+## What it does
 
-- `.github/workflows/gym-reminder.yml` runs on a GitHub Actions cron schedule
-  at 02:00 UTC every day, which is **06:00 Asia/Dubai** (UTC+4, no DST).
-- `scripts/send_reminder.py` computes the current day of week in
-  `Asia/Dubai` time, looks up the matching workout in `data/workouts.json`,
-  and POSTs it to your ntfy.sh topic as a push notification.
-- `data/workouts.json` holds all 6 day-scripts (Push/Pull/Legs, each with
-  warm-up, exercises, sets/reps, cooldown) plus the day-of-week schedule.
-  Edit this file any time to change your workouts — no need to touch the
-  workflow or script.
+**Program generation**
+- Intake quiz: age, sex, height, weight, goal, experience, training location
+- Three genuinely different exercise libraries — gym, home-with-dumbbells, and
+  fully bodyweight — not one list with things greyed out
+- Sets, reps, rest and RPE tuned per goal and experience
+- Training location is changeable later from Settings, which regenerates the
+  program (with a confirmation step first — logged sets, PRs and streaks are kept)
+- Each user's weekday-to-workout mapping is offset by a hash of their user id, so
+  people sharing the app don't all hit leg day on the same Tuesday
 
-Schedule (in `data/workouts.json` under `"schedule"`):
+**Training**
+- Per-set logging (weight × reps) with previous-session recall
+- Automatic personal-record detection and an estimated 1RM
+- Streak tracking, weekly volume charts, progress photos
+- Per-exercise form cues, common mistakes, breathing notes and a form-video link
 
-| Day | Workout |
-|-----|---------|
-| Monday | Push |
-| Tuesday | Pull |
-| Wednesday | Legs |
-| Thursday | Push |
-| Friday | Pull |
-| Saturday | Legs |
-| Sunday | Rest |
+**Health & habits**
+- Calorie, protein and water targets derived from your profile (Mifflin-St Jeor)
+- Daily water and protein logging against those targets
+- Optional blood-pressure logging
+- Opt-in daily push reminders for water and workouts
+
+## Layout
+
+The Next.js application lives in [`forge-saas/`](forge-saas/).
+
+```
+forge-saas/
+├── src/app/            # routes: landing, auth, onboarding, dashboard, settings
+├── src/components/     # UI components
+├── src/lib/exercises/  # the three exercise libraries + program generator
+└── supabase/schema.sql # database schema, RLS policies, triggers
+```
 
 ## Setup
 
-1. **Install the ntfy app** on your phone (iOS App Store / Google Play:
-   search "ntfy"), or use the web app at https://ntfy.sh/app.
+1. Create a Supabase project and run [`forge-saas/supabase/schema.sql`](forge-saas/supabase/schema.sql)
+   in its SQL editor.
+2. Copy `forge-saas/.env.example` to `.env.local` and fill in your Supabase URL
+   and anon key (plus VAPID keys if you want push reminders).
+3. `cd forge-saas && npm install && npm run dev`
 
-2. **Pick a unique, hard-to-guess topic name.** Anyone who knows your topic
-   name can read your notifications or publish to it, since ntfy.sh topics
-   are public by default (unless you self-host or pay for ntfy Pro). Do not
-   use something guessable like `john-gym`. A good pattern is
-   `gym-<random string>`, e.g. `gym-7k2m9xqf31`.
+## Status
 
-3. **Subscribe to that topic in the ntfy app** (tap "+", enter the topic
-   name, use the default `ntfy.sh` server).
+Free during beta. Exercise selection is rules-based, not AI-generated — the same
+proven split for everyone, with volume, intensity and equipment personalized on
+top of it.
 
-4. **Add the topic as a GitHub repository secret** (this repo, not a file —
-   keeping it out of the repo avoids leaking it if the repo is ever made
-   public):
-   - Go to this repo on GitHub → **Settings → Secrets and variables →
-     Actions → New repository secret**.
-   - Name: `NTFY_TOPIC`
-   - Value: the topic name you picked in step 2.
-   - Save.
+## Note
 
-5. **(Optional) Edit your workouts.** Open `data/workouts.json` and adjust
-   exercises, sets/reps, warm-up, or cooldown to taste. Commit and push your
-   changes.
-
-6. **Commit and push** (if you made any edits):
-   ```bash
-   git add data/workouts.json
-   git commit -m "Customize workouts"
-   git push -u origin claude/gym-reminder-github-actions-w03bfv
-   ```
-
-7. **Test it on demand** instead of waiting for 6am:
-   - Go to this repo on GitHub → **Actions → Gym Reminder → Run workflow**.
-   - Leave `topic_override` blank to send to your real `NTFY_TOPIC` secret,
-     or fill it in with a throwaway topic name to test without touching your
-     real one.
-   - Click **Run workflow**.
-
-8. **Verify it on your phone.** Within a few seconds of the run finishing,
-   you should see a push notification titled e.g. "Friday: Pull Day (Back /
-   Biceps)" with the full workout as the body. If nothing arrives:
-   - Check the ntfy app is actually subscribed to the exact topic name in
-     your `NTFY_TOPIC` secret (typos are the most common cause).
-   - Check notification permissions are enabled for the ntfy app in your
-     phone's OS settings.
-   - Check the workflow run's logs in the GitHub Actions tab for the HTTP
-     status code returned by ntfy.sh.
-
-Once merged to your default branch, the schedule trigger takes over and
-you'll get the reminder automatically every day at 6am Asia/Dubai time — no
-laptop or app needs to be open.
-
-## Changing timezone or send time
-
-Edit the cron line in `.github/workflows/gym-reminder.yml`:
-
-```yaml
-schedule:
-  - cron: "0 2 * * *"   # 02:00 UTC
-```
-
-GitHub Actions cron always runs in UTC, so convert your desired local time
-to UTC and update the comment above it. Note GitHub Actions schedules can be
-delayed by a few minutes during high load; this is a platform limitation.
+This is a training aid, not medical advice. Anyone with a health condition or
+injury should talk to a doctor before starting a new program.
