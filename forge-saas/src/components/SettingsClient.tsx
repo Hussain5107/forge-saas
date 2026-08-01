@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import {
   updateProfile,
@@ -10,11 +10,16 @@ import {
   logHealthMetric,
   savePushSubscription,
   updateProgramSettings,
+  updateTheme,
 } from "@/app/dashboard/settings/actions";
 import type { DaysPerWeek, TrainingLocation } from "@/lib/exercises/types";
 import { subscribeToPush, supportsPush } from "@/lib/pushClient";
 import { Button, Card, Checkbox, Input, Label } from "./ui";
-import { Logo } from "./Logo";
+import AppHeader from "./AppHeader";
+import ThemePicker from "./ThemePicker";
+import CycleSettingsCard from "./CycleSettingsCard";
+import type { CycleSettings } from "@/lib/cycle";
+import { resolveTheme, type ThemeName } from "@/lib/theme";
 
 interface Profile {
   id: string;
@@ -33,6 +38,7 @@ interface Profile {
   training_location: TrainingLocation;
   has_dumbbells_at_home: boolean;
   days_per_week: DaysPerWeek;
+  theme: string | null;
 }
 
 interface HealthMetric {
@@ -62,10 +68,18 @@ function formatHour(h: number): string {
 export default function SettingsClient({
   profile,
   recentMetrics,
+  cycle,
 }: {
   profile: Profile;
   recentMetrics: HealthMetric[];
+  /** Null when the feature isn't offered to this account. */
+  cycle: (CycleSettings & { eligible: true }) | null;
 }) {
+  const router = useRouter();
+  const [theme, setTheme] = useState<ThemeName>(resolveTheme(profile.theme).name);
+  const [themeSaving, setThemeSaving] = useState(false);
+  const [themeError, setThemeError] = useState<string | null>(null);
+
   const [avatarUrl, setAvatarUrl] = useState(profile.avatar_url);
   const [uploading, setUploading] = useState(false);
   const [dateOfBirth, setDateOfBirth] = useState(profile.date_of_birth ?? "");
@@ -138,6 +152,23 @@ export default function SettingsClient({
     if (json.endpoint && json.keys?.p256dh && json.keys?.auth) {
       const result = await savePushSubscription(json.endpoint, json.keys.p256dh, json.keys.auth);
       setPushNotice(result.error ? `Couldn't save notification settings: ${result.error}` : null);
+    }
+  }
+
+  async function handleThemeChange(next: ThemeName) {
+    const previous = theme;
+    setTheme(next);
+    setThemeSaving(true);
+    setThemeError(null);
+    const result = await updateTheme(next);
+    setThemeSaving(false);
+    if (result.error) {
+      setTheme(previous);
+      setThemeError(result.error);
+    } else {
+      // The colours live in the layout above this page, so ask the server for
+      // a fresh render rather than trying to repaint from here.
+      router.refresh();
     }
   }
 
@@ -223,17 +254,8 @@ export default function SettingsClient({
   }
 
   return (
-    <main className="mx-auto w-full max-w-2xl px-4 pb-24 pt-6 sm:px-6">
-      <header className="mb-6 flex items-center justify-between">
-        <Link href="/dashboard">
-          <Logo />
-        </Link>
-        <Link href="/dashboard" className="text-xs text-[var(--text-faint)] hover:text-[var(--text)]">
-          ← Back to today
-        </Link>
-      </header>
-
-      <h1 className="mb-6 text-2xl font-extrabold">Settings</h1>
+    <main className="mx-auto w-full max-w-2xl px-4 pb-4 sm:px-6">
+      <AppHeader title="Profile" subtitle={profile.email ?? undefined} />
 
       <Card className="p-6">
         <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-[var(--text-faint)]">Profile</h2>
@@ -247,7 +269,7 @@ export default function SettingsClient({
             )}
           </span>
           <label className="cursor-pointer">
-            <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border-hi)] bg-[var(--surface-hi)] px-4 py-2 text-xs font-bold hover:border-[var(--cyan)]">
+            <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border-hi)] bg-[var(--surface-hi)] px-4 py-2 text-xs font-bold hover:border-[var(--secondary)]">
               {uploading ? "Uploading…" : "Change photo"}
             </span>
             <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} disabled={uploading} />
@@ -270,6 +292,25 @@ export default function SettingsClient({
           </div>
         </div>
       </Card>
+
+      <Card className="mt-6 p-6">
+        <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-[var(--text-faint)]">Appearance</h2>
+        <ThemePicker value={theme} onChange={handleThemeChange} disabled={themeSaving} />
+        <p className="mt-2 text-xs text-[var(--text-faint)]">
+          Changes the colours and logo across the app. Your program, history and targets stay
+          exactly as they are.
+        </p>
+        {themeError && <p className="mt-2 text-sm text-[var(--rose)]">Couldn&apos;t save that: {themeError}</p>}
+      </Card>
+
+      {cycle && (
+        <CycleSettingsCard
+          enabled={cycle.enabled}
+          lastPeriodStart={cycle.lastPeriodStart}
+          averageCycleLength={cycle.averageCycleLength}
+          periodDuration={cycle.periodDuration}
+        />
+      )}
 
       <Card className="mt-6 p-6">
         <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-[var(--text-faint)]">Your program</h2>
@@ -332,7 +373,7 @@ export default function SettingsClient({
                 }}
                 className={`rounded-xl border px-2 py-2.5 text-center transition ${
                   daysPerWeek === choice.days
-                    ? "border-transparent bg-gradient-to-br from-[var(--violet)] to-[var(--cyan)] text-white"
+                    ? "border-transparent bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] text-white"
                     : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-dim)] hover:border-[var(--border-hi)]"
                 }`}
               >
@@ -404,7 +445,7 @@ export default function SettingsClient({
             onChange={(e) => setOtherHealthNotes(e.target.value)}
             rows={2}
             placeholder="Injuries, conditions, medications that affect training…"
-            className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-2)] p-2.5 text-sm outline-none focus:border-[var(--cyan)]"
+            className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-2)] p-2.5 text-sm outline-none focus:border-[var(--secondary)]"
           />
         </div>
       </Card>
@@ -515,6 +556,13 @@ export default function SettingsClient({
           </div>
         )}
       </Card>
+
+      {/* Log out lives here now that the tab bar replaced the top-right menu. */}
+      <form action="/auth/signout" method="post" className="mt-6">
+        <Button type="submit" className="w-full">
+          Log out
+        </Button>
+      </form>
     </main>
   );
 }
@@ -526,7 +574,7 @@ function LocationButton({ label, active, onClick }: { label: string; active: boo
       onClick={onClick}
       className={`rounded-xl border px-4 py-3 text-sm font-semibold transition ${
         active
-          ? "border-transparent bg-gradient-to-br from-[var(--violet)] to-[var(--cyan)] text-white"
+          ? "border-transparent bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] text-white"
           : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-dim)] hover:border-[var(--border-hi)]"
       }`}
     >

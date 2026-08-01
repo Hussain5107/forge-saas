@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import type { Map as LeafletMap } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Button, Card } from "./ui";
-import { Logo } from "./Logo";
+import AppHeader from "./AppHeader";
+import { useTheme } from "./ThemeProvider";
 import type { Gym } from "@/app/api/gyms/route";
 
 type Status = "idle" | "locating" | "loading" | "ready" | "error";
@@ -18,6 +18,7 @@ const RADIUS_OPTIONS = [
 ];
 
 export default function GymsClient() {
+  const theme = useTheme();
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
   const [gyms, setGyms] = useState<Gym[]>([]);
@@ -63,7 +64,7 @@ export default function GymsClient() {
     L.marker([lat, lon], {
       icon: L.divIcon({
         className: "",
-        html: '<span style="display:block;width:16px;height:16px;border-radius:9999px;background:#22d3ee;box-shadow:0 0 0 4px rgba(34,211,238,0.3)"></span>',
+        html: `<span style="display:block;width:16px;height:16px;border-radius:9999px;background:${theme.colors.secondary};box-shadow:0 0 0 4px ${theme.colors.secondary}4d"></span>`,
         iconSize: [16, 16],
         iconAnchor: [8, 8],
       }),
@@ -75,7 +76,7 @@ export default function GymsClient() {
       const marker = L.marker([gym.lat, gym.lon], {
         icon: L.divIcon({
           className: "",
-          html: `<span style="display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:9999px;background:linear-gradient(135deg,#8b5cf6,#22d3ee);color:#fff;font:700 12px/1 system-ui;border:2px solid rgba(255,255,255,0.85)">${i + 1}</span>`,
+          html: `<span style="display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:9999px;background:linear-gradient(135deg,${theme.colors.primary},${theme.colors.secondary});color:#fff;font:700 12px/1 system-ui;border:2px solid rgba(255,255,255,0.85)">${i + 1}</span>`,
           iconSize: [26, 26],
           iconAnchor: [13, 13],
         }),
@@ -95,7 +96,7 @@ export default function GymsClient() {
         ),
       );
     }
-  }, []);
+  }, [theme]);
 
   const fetchGyms = useCallback(
     async (lat: number, lon: number, r: number) => {
@@ -157,18 +158,10 @@ export default function GymsClient() {
   const busy = status === "locating" || status === "loading";
 
   return (
-    <main className="mx-auto w-full max-w-3xl px-4 pb-24 pt-6 sm:px-6">
-      <header className="mb-6 flex items-center justify-between">
-        <Link href="/dashboard">
-          <Logo />
-        </Link>
-        <Link href="/dashboard" className="text-xs text-[var(--text-faint)] hover:text-[var(--text)]">
-          ← Back to today
-        </Link>
-      </header>
+    <main className="mx-auto w-full max-w-3xl px-4 pb-4 sm:px-6">
+      <AppHeader title="Gyms near you" subtitle="From OpenStreetMap" />
 
-      <h1 className="text-2xl font-extrabold">Gyms near you</h1>
-      <p className="mt-1 text-sm text-[var(--text-dim)]">
+      <p className="text-sm text-[var(--text-dim)]">
         Find a gym close by — useful if you train at home and want somewhere to lift heavier, or
         you&apos;re somewhere new.
       </p>
@@ -201,7 +194,7 @@ export default function GymsClient() {
                 disabled={busy}
                 className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition disabled:opacity-40 ${
                   radius === o.value
-                    ? "bg-gradient-to-br from-[var(--violet)] to-[var(--cyan)] text-white"
+                    ? "bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] text-white"
                     : "border border-[var(--border)] bg-[var(--surface)] text-[var(--text-dim)] hover:border-[var(--border-hi)]"
                 }`}
               >
@@ -212,7 +205,7 @@ export default function GymsClient() {
               type="button"
               onClick={locate}
               disabled={busy}
-              className="ml-auto rounded-full border border-[var(--border-hi)] bg-[var(--surface-hi)] px-3.5 py-1.5 text-xs font-bold hover:border-[var(--cyan)] disabled:opacity-40"
+              className="ml-auto rounded-full border border-[var(--border-hi)] bg-[var(--surface-hi)] px-3.5 py-1.5 text-xs font-bold hover:border-[var(--secondary)] disabled:opacity-40"
             >
               {busy ? "Searching…" : "↻ Refresh"}
             </button>
@@ -254,16 +247,16 @@ export default function GymsClient() {
           {gyms.map((gym, i) => (
             <Card
               key={gym.id}
-              className={`p-4 transition ${selectedId === gym.id ? "border-[var(--cyan)]" : ""}`}
+              className={`p-4 transition ${selectedId === gym.id ? "border-[var(--secondary)]" : ""}`}
             >
               <div className="flex items-start gap-3">
-                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--violet)] to-[var(--cyan)] text-xs font-bold text-white">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] text-xs font-bold text-white">
                   {i + 1}
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <h3 className="text-[15px] font-bold">{gym.name}</h3>
-                    <span className="font-mono text-xs text-[var(--cyan)]">
+                    <span className="font-mono text-xs text-[var(--secondary)]">
                       {gym.distanceKm.toFixed(1)} km
                     </span>
                   </div>
@@ -278,7 +271,7 @@ export default function GymsClient() {
                       href={`https://www.google.com/maps/dir/?api=1&destination=${gym.lat},${gym.lon}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded-full border border-[var(--border-hi)] bg-[var(--surface-hi)] px-3 py-1.5 text-xs font-bold hover:border-[var(--cyan)]"
+                      className="rounded-full border border-[var(--border-hi)] bg-[var(--surface-hi)] px-3 py-1.5 text-xs font-bold hover:border-[var(--secondary)]"
                     >
                       Directions
                     </a>
