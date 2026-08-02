@@ -1,0 +1,50 @@
+name: CI
+
+# The Phase 0 safety baseline: lint, typecheck, and the new unit test suite,
+# on every push and pull request. See docs/kids-mode/05-delivery-roadmap.md.
+#
+# This is deliberately NOT wired to `next build` or to deployment. Vercel
+# builds and deploys independently of this workflow's result — see
+# docs/repository.md. Nothing here can block or trigger a deploy.
+#
+# The app lives in the forge-saas/ subdirectory of this repository (documented
+# as a known wart in docs/repository.md), hence working-directory everywhere.
+
+on:
+  push:
+  pull_request:
+
+defaults:
+  run:
+    working-directory: forge-saas
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: forge-saas/package-lock.json
+
+      - run: npm ci
+
+      # continue-on-error: the repository has 11 pre-existing lint errors
+      # (react-hooks/set-state-in-effect, none introduced by Kids Mode work —
+      # see docs/kids-mode/01-decisions.md). A CI job that is permanently red
+      # for reasons unrelated to the change being reviewed trains everyone to
+      # ignore it, which defeats the point of having it. This still runs and
+      # still annotates the PR — it just doesn't block on debt that predates
+      # this workflow. Remove continue-on-error once that debt is cleared.
+      - name: Lint (informational — see comment above)
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
