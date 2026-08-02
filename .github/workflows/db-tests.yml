@@ -1,0 +1,51 @@
+name: Database tests (manual)
+
+# Runs supabase/tests/database/*.sql via pgTAP, against a real local Postgres
+# spun up by the Supabase CLI. Deliberately NOT on push/pull_request — it pulls
+# ~10 container images and takes a few minutes, which is too heavy for routine
+# CI (that's ci.yml). This exists to make "run supabase test db in an
+# environment with Docker" reproducible on demand, since the sandbox that
+# wrote these tests has no network access to container registries.
+#
+# See docs/kids-mode/01-decisions.md E-004 for why this test exists and what
+# it proves; docs/kids-mode/05-delivery-roadmap.md for when it was last run.
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: forge-saas
+
+jobs:
+  db-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: forge-saas/package-lock.json
+
+      - run: npm ci
+
+      - name: Start local Supabase (Postgres + pgTAP via Docker)
+        run: npx supabase start
+
+      # supabase/migrations/ is intentionally empty right now (schema.sql is
+      # the historical record — see supabase/migrations/README.md), so the
+      # schema has to be applied explicitly before the tests can run against it.
+      - name: Apply schema.sql to the local instance
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
+          psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" \
+            -v ON_ERROR_STOP=1 -f supabase/schema.sql
+
+      - name: Run pgTAP tests
+        run: npx supabase test db
+
+      - name: Stop local Supabase
+        if: always()
+        run: npx supabase stop
