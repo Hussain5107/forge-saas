@@ -46,6 +46,29 @@ jobs:
           psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" \
             -v ON_ERROR_STOP=1 -f supabase/schema.sql
 
+      # A real Supabase project provisions default table-level grants for
+      # anon/authenticated/service_role at project creation time — that
+      # provisioning lives in Supabase's platform, not in schema.sql, and a
+      # bare `supabase start` + schema.sql-only stack never gets it. Proven
+      # for real by the first run of this workflow: pgTAP failed with
+      # "permission denied for table cycle_settings" even though the RLS
+      # policy itself was correct — the role had no table grant to be
+      # filtered by RLS in the first place. This step exists ONLY to restore
+      # local-test parity with that platform behaviour; schema.sql itself is
+      # deliberately left untouched (see docs/kids-mode/01-decisions.md).
+      - name: Grant table privileges (mirrors real Supabase project bootstrap)
+        run: |
+          psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" -v ON_ERROR_STOP=1 <<'SQL'
+          grant usage on schema public to anon, authenticated, service_role;
+          grant select, insert, update, delete on all tables in schema public to authenticated;
+          grant select on all tables in schema public to anon;
+          grant all on all tables in schema public to service_role;
+          grant usage, select on all sequences in schema public to authenticated, service_role;
+          alter default privileges in schema public grant select, insert, update, delete on tables to authenticated;
+          alter default privileges in schema public grant select on tables to anon;
+          alter default privileges in schema public grant all on tables to service_role;
+          SQL
+
       - name: Run pgTAP tests (RLS ownership)
         run: npx supabase test db
 
