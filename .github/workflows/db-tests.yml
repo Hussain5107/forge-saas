@@ -1,14 +1,17 @@
-name: Database tests (manual)
+name: Database + regression tests (manual)
 
-# Runs supabase/tests/database/*.sql via pgTAP, against a real local Postgres
-# spun up by the Supabase CLI. Deliberately NOT on push/pull_request — it pulls
-# ~10 container images and takes a few minutes, which is too heavy for routine
-# CI (that's ci.yml). This exists to make "run supabase test db in an
-# environment with Docker" reproducible on demand, since the sandbox that
-# wrote these tests has no network access to container registries.
+# Two things "in an environment with Docker" that the sandbox these were
+# written in cannot do itself (its network policy allows package registries
+# but rejects container registries — see docs/kids-mode/01-decisions.md E-004
+# and the completion report for the exact evidence):
 #
-# See docs/kids-mode/01-decisions.md E-004 for why this test exists and what
-# it proves; docs/kids-mode/05-delivery-roadmap.md for when it was last run.
+#   1. supabase test db — pgTAP tests against a real local Postgres.
+#   2. A Playwright pass of the Adult Mode regression checklist, against the
+#      real app running against that same local Supabase stack. Never
+#      production — there is no production credential anywhere in this file.
+#
+# workflow_dispatch only: pulls ~10 images and runs a full browser suite,
+# too heavy for routine push/PR CI. That stays ci.yml's job.
 
 on:
   workflow_dispatch:
@@ -18,7 +21,7 @@ defaults:
     working-directory: forge-saas
 
 jobs:
-  db-tests:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,15 +39,66 @@ jobs:
 
       # supabase/migrations/ is intentionally empty right now (schema.sql is
       # the historical record — see supabase/migrations/README.md), so the
-      # schema has to be applied explicitly before the tests can run against it.
+      # schema has to be applied explicitly before anything can run against it.
       - name: Apply schema.sql to the local instance
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
           psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" \
             -v ON_ERROR_STOP=1 -f supabase/schema.sql
 
-      - name: Run pgTAP tests
+      - name: Run pgTAP tests (RLS ownership)
         run: npx supabase test db
+
+      - name: Read local Supabase connection details
+        id: supa
+        run: |
+          npx supabase status -o env > /tmp/supa.env
+          echo "url=$(grep '^API_URL=' /tmp/supa.env | cut -d= -f2- | tr -d '\"')" >> "$GITHUB_OUTPUT"
+          echo "anon_key=$(grep '^ANON_KEY=' /tmp/supa.env | cut -d= -f2- | tr -d '\"')" >> "$GITHUB_OUTPUT"
+          echo "service_role_key=$(grep '^SERVICE_ROLE_KEY=' /tmp/supa.env | cut -d= -f2- | tr -d '\"')" >> "$GITHUB_OUTPUT"
+
+      - name: Build the app against the local Supabase instance
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ steps.supa.outputs.url }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ steps.supa.outputs.anon_key }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ steps.supa.outputs.service_role_key }}
+          # Not real secrets — throwaway values so build-time module evaluation
+          # (web-push's setVapidDetails, called at import time by the cron
+          # route) doesn't throw on a missing subject. Nothing here can send a
+          # real push notification or authorize a real cron call.
+          NEXT_PUBLIC_VAPID_PUBLIC_KEY: BBHbsWdW8yO2mVv5t5wuW4Zw1lfVljBvTmr6GUwAGXFV4bIe5MkWAlH7yY_UJlaLO8dLWx2SZDR27kDlMT3cI4g
+          VAPID_PRIVATE_KEY: CHtvNxqZ7xXknsgg22Ni-RgMGQY7VHwe6j9oqlkUXRI
+          VAPID_SUBJECT: mailto:ci-placeholder@example.invalid
+          CRON_SECRET: ci-placeholder-not-a-real-secret
+        run: npm run build
+
+      - name: Install Playwright's browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Start the app
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ steps.supa.outputs.url }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ steps.supa.outputs.anon_key }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ steps.supa.outputs.service_role_key }}
+          NEXT_PUBLIC_VAPID_PUBLIC_KEY: BBHbsWdW8yO2mVv5t5wuW4Zw1lfVljBvTmr6GUwAGXFV4bIe5MkWAlH7yY_UJlaLO8dLWx2SZDR27kDlMT3cI4g
+          VAPID_PRIVATE_KEY: CHtvNxqZ7xXknsgg22Ni-RgMGQY7VHwe6j9oqlkUXRI
+          VAPID_SUBJECT: mailto:ci-placeholder@example.invalid
+          CRON_SECRET: ci-placeholder-not-a-real-secret
+        run: npx next start -p 3000 &
+
+      - name: Wait for the app to answer
+        run: npx wait-on http://127.0.0.1:3000 --timeout 60000
+
+      - name: Run the Adult Mode regression checklist (Playwright)
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: forge-saas/playwright-report/
+          retention-days: 7
 
       - name: Stop local Supabase
         if: always()
