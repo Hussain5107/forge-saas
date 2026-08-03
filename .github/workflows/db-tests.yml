@@ -34,14 +34,38 @@ jobs:
 
       - run: npm ci
 
+      # `supabase start` applies everything in supabase/migrations/*.sql
+      # itself, automatically, as part of bootstrapping the local Postgres
+      # instance — this is the Supabase CLI's normal behaviour for local dev,
+      # and there is no flag to turn it off (checked: `supabase start --help`
+      # has nothing for it). This repo deliberately does NOT follow the CLI's
+      # usual model where migrations/ is the complete schema history —
+      # schema.sql is (supabase/migrations/README.md) — so a bare `supabase
+      # start` tries to run the Kids Mode migration (which ALTERs
+      # public.profiles) before schema.sql has ever created that table.
+      # First hit for real the moment this repo got its first-ever migration
+      # file — see docs/kids-mode/01-decisions.md E-018. Worked around by
+      # moving the migration files aside before start, then back before
+      # applying schema.sql and the migrations in the intended order. This is
+      # CI-only plumbing; the migration files and schema.sql are untouched.
+      - name: Move migrations aside so `supabase start` can't auto-apply them early
+        run: |
+          mkdir -p /tmp/migrations-holding
+          shopt -s nullglob
+          for f in supabase/migrations/*.sql; do mv "$f" /tmp/migrations-holding/; done
+
       - name: Start local Supabase (Postgres + pgTAP via Docker)
         run: npx supabase start
 
+      - name: Restore migrations
+        run: |
+          shopt -s nullglob
+          for f in /tmp/migrations-holding/*.sql; do mv "$f" supabase/migrations/; done
+
       # schema.sql is the historical record (17 sections, already applied to
       # production); supabase/migrations/*.sql is everything since Kids Mode
-      # Phase 1 — see supabase/migrations/README.md. Neither auto-applies to a
-      # bare local stack, so both are applied explicitly, in order, before
-      # anything can run against it.
+      # Phase 1 — see supabase/migrations/README.md. Applied explicitly, in
+      # order, now that `supabase start` can no longer jump ahead of schema.sql.
       - name: Apply schema.sql and migrations to the local instance
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
