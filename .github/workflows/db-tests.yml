@@ -37,14 +37,21 @@ jobs:
       - name: Start local Supabase (Postgres + pgTAP via Docker)
         run: npx supabase start
 
-      # supabase/migrations/ is intentionally empty right now (schema.sql is
-      # the historical record — see supabase/migrations/README.md), so the
-      # schema has to be applied explicitly before anything can run against it.
-      - name: Apply schema.sql to the local instance
+      # schema.sql is the historical record (17 sections, already applied to
+      # production); supabase/migrations/*.sql is everything since Kids Mode
+      # Phase 1 — see supabase/migrations/README.md. Neither auto-applies to a
+      # bare local stack, so both are applied explicitly, in order, before
+      # anything can run against it.
+      - name: Apply schema.sql and migrations to the local instance
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
           psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" \
             -v ON_ERROR_STOP=1 -f supabase/schema.sql
+          shopt -s nullglob
+          for f in supabase/migrations/*.sql; do
+            echo "Applying $f"
+            psql "postgresql://postgres:postgres@127.0.0.1:54322/postgres" -v ON_ERROR_STOP=1 -f "$f"
+          done
 
       # A real Supabase project provisions default table-level grants for
       # anon/authenticated/service_role at project creation time — that
@@ -93,6 +100,9 @@ jobs:
           VAPID_PRIVATE_KEY: CHtvNxqZ7xXknsgg22Ni-RgMGQY7VHwe6j9oqlkUXRI
           VAPID_SUBJECT: mailto:ci-placeholder@example.invalid
           CRON_SECRET: ci-placeholder-not-a-real-secret
+          # Throwaway CI value for the parent PIN session JWT (src/lib/kids/pin.ts)
+          # — signs tokens for this run only, never a real secret.
+          PIN_SESSION_SECRET: ci-placeholder-pin-secret-not-a-real-secret
         run: npm run build
 
       - name: Install Playwright's browser
@@ -107,6 +117,9 @@ jobs:
           VAPID_PRIVATE_KEY: CHtvNxqZ7xXknsgg22Ni-RgMGQY7VHwe6j9oqlkUXRI
           VAPID_SUBJECT: mailto:ci-placeholder@example.invalid
           CRON_SECRET: ci-placeholder-not-a-real-secret
+          # Throwaway CI value for the parent PIN session JWT (src/lib/kids/pin.ts)
+          # — signs tokens for this run only, never a real secret.
+          PIN_SESSION_SECRET: ci-placeholder-pin-secret-not-a-real-secret
         run: npx next start -p 3000 &
 
       - name: Wait for the app to answer
